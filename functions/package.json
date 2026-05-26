@@ -1,0 +1,28 @@
+{
+  "name": "consilium-functions",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Consilium Azure Durable Functions backend (Historian + stubbed agents)",
+  "main": "dist/src/index.js",
+  "scripts": {
+    "build": "tsc",
+    "build:watch": "tsc -w",
+    "clean": "rimraf dist",
+    "prestart": "npm run clean && npm run build",
+    "start": "func start",
+    "test": "echo \"no tests yet\" && exit 0"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.40.0",
+    "@azure/cosmos": "^4.1.0",
+    "@azure/functions": "^4.5.0",
+    "@azure/identity": "^4.5.0",
+    "durable-functions": "^3.1.0",
+    "zod": "^3.23.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.5.0"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "node",
+    "FUNCTIONS_EXTENSION_VERSION": "~4",
+    "AzureFunctionsJobHost__logging__logLevel__default": "Information",
+
+    "ANTHROPIC_API_KEY": "sk-ant-REPLACE-ME",
+    "CONSILIUM_API_KEY": "local-dev-shared-secret-change-me",
+
+    "COSMOS_ENDPOINT": "",
+    "COSMOS_DATABASE": "consilium",
+    "COSMOS_CASES_CONTAINER": "cases",
+    "COSMOS_TRACES_CONTAINER": "traces",
+
+    "LOCAL_DATA_DIR": ".local-data"
+  },
+  "Host": {
+    "LocalHttpPort": 7071,
+    "CORS": "http://localhost:3000",
+    "CORSCredentials": false
+  }
+}
