@@ -1,0 +1,375 @@
+{
+  "metadata": {
+    "name": "Consilium Phase 1 Test Cases",
+    "version": "0.1.0",
+    "description": "Hand-curated clinical vignettes for evaluating the Consilium multi-agent reasoning system. Each case mirrors common clinical teaching presentations and is constructed from generic patterns, not copied from any specific copyrighted source. Cases span multiple body systems and complexity levels.",
+    "case_count": 10,
+    "complexity_distribution": {
+      "straightforward": 4,
+      "moderate": 4,
+      "challenging": 2
+    },
+    "scoring_guide": "A case is scored 'pass' if the expected_diagnosis appears in the Differential agent's top 3 ranked diagnoses. 'Partial' if it appears in top 5. 'Fail' if not present or below top 5.",
+    "intended_use": "Smoke testing, regression testing, and the eval harness for the LinkedIn demo. Not for clinical use."
+  },
+  "cases": [
+    {
+      "case_id": "case-001-acs",
+      "complexity": "straightforward",
+      "system": "cardiovascular",
+      "expected_diagnosis": "Acute coronary syndrome",
+      "differential_should_include": [
+        "Acute coronary syndrome",
+        "Unstable angina",
+        "ST-elevation myocardial infarction",
+        "Non-ST-elevation myocardial infarction"
+      ],
+      "input": {
+        "age": 58,
+        "sex": "male",
+        "chief_complaint": "chest pain",
+        "duration": "2 hours",
+        "current_medications": [
+          "lisinopril 10mg daily",
+          "atorvastatin 40mg daily",
+          "metformin 500mg twice daily"
+        ],
+        "allergies": ["penicillin (rash)"],
+        "past_medical_history": [
+          "hypertension",
+          "type 2 diabetes",
+          "hyperlipidemia",
+          "former smoker (quit 5 years ago)"
+        ],
+        "vital_signs": {
+          "bp": "158/94",
+          "hr": 102,
+          "temp": 98.6,
+          "rr": 20,
+          "spo2": 96
+        },
+        "free_text": "Patient presents with substernal chest pressure that began 2 hours ago while watching television. Describes the pain as heavy and radiating to the left arm. Associated with diaphoresis and mild nausea. No vomiting. Pain is constant, rated 7/10. No relief with rest. Denies prior episodes. Exam: Diaphoretic, mildly anxious appearing. Lungs clear bilaterally. Cardiac exam reveals regular rate and rhythm, no murmurs, rubs, or gallops. No JVD. Abdomen soft, non-tender. Extremities without edema. Neuro grossly intact."
+      }
+    },
+    {
+      "case_id": "case-002-pe",
+      "complexity": "moderate",
+      "system": "respiratory",
+      "expected_diagnosis": "Pulmonary embolism",
+      "differential_should_include": [
+        "Pulmonary embolism",
+        "Acute coronary syndrome",
+        "Pneumonia",
+        "Pneumothorax"
+      ],
+      "input": {
+        "age": 42,
+        "sex": "female",
+        "chief_complaint": "sudden shortness of breath and pleuritic chest pain",
+        "duration": "6 hours",
+        "current_medications": [
+          "oral contraceptive pill",
+          "ibuprofen as needed"
+        ],
+        "allergies": [],
+        "past_medical_history": [
+          "obesity (BMI 34)",
+          "recent long-haul flight 3 days ago (12 hours)"
+        ],
+        "vital_signs": {
+          "bp": "118/76",
+          "hr": 118,
+          "temp": 99.1,
+          "rr": 26,
+          "spo2": 91
+        },
+        "free_text": "Patient presents with sudden onset of right-sided pleuritic chest pain and shortness of breath that began 6 hours ago at rest. Pain worsens with deep inspiration. Reports mild calf pain and swelling in the right leg that she attributed to the recent flight. No fever, no productive cough, no recent illness. Exam: Tachypneic and mildly anxious. Lungs clear bilaterally with no wheezes or crackles. Cardiac exam reveals tachycardia, regular rhythm, no murmurs. Right calf is tender to palpation with mild swelling compared to left. Homans sign equivocal. No skin changes."
+      }
+    },
+    {
+      "case_id": "case-003-cap",
+      "complexity": "straightforward",
+      "system": "respiratory",
+      "expected_diagnosis": "Community-acquired pneumonia",
+      "differential_should_include": [
+        "Community-acquired pneumonia",
+        "Bronchitis",
+        "COVID-19",
+        "Influenza"
+      ],
+      "input": {
+        "age": 67,
+        "sex": "male",
+        "chief_complaint": "fever and productive cough",
+        "duration": "4 days",
+        "current_medications": [
+          "amlodipine 5mg daily",
+          "aspirin 81mg daily"
+        ],
+        "allergies": ["sulfa drugs (hives)"],
+        "past_medical_history": [
+          "hypertension",
+          "COPD (mild, GOLD stage 1)",
+          "current smoker (30 pack-year history)"
+        ],
+        "vital_signs": {
+          "bp": "132/82",
+          "hr": 96,
+          "temp": 101.8,
+          "rr": 22,
+          "spo2": 93
+        },
+        "free_text": "Patient presents with 4 days of productive cough with yellow-green sputum, fevers up to 102F, fatigue, and right-sided pleuritic chest pain. Reports decreased appetite and one episode of shaking chills last night. No recent travel. No known sick contacts. Exam: Appears mildly ill but not in acute distress. Lungs reveal crackles and decreased breath sounds in the right lower lobe with egophony. No wheezing. Cardiac exam unremarkable. No leg swelling."
+      }
+    },
+    {
+      "case_id": "case-004-dka",
+      "complexity": "moderate",
+      "system": "endocrine",
+      "expected_diagnosis": "Diabetic ketoacidosis",
+      "differential_should_include": [
+        "Diabetic ketoacidosis",
+        "Hyperosmolar hyperglycemic state",
+        "Sepsis",
+        "Acute gastroenteritis"
+      ],
+      "input": {
+        "age": 24,
+        "sex": "female",
+        "chief_complaint": "abdominal pain, nausea, and vomiting",
+        "duration": "12 hours",
+        "current_medications": [
+          "insulin glargine 20 units at bedtime",
+          "insulin aspart with meals"
+        ],
+        "allergies": [],
+        "past_medical_history": [
+          "type 1 diabetes (diagnosed age 14)",
+          "recent viral illness one week ago"
+        ],
+        "vital_signs": {
+          "bp": "104/64",
+          "hr": 124,
+          "temp": 99.4,
+          "rr": 28,
+          "spo2": 99
+        },
+        "free_text": "Patient presents with 12 hours of diffuse abdominal pain, nausea, and persistent vomiting. Reports increased thirst and urination over the past 2 days. Admits to missing several insulin doses due to feeling unwell. Last finger stick at home was greater than 400 mg/dL. Exam: Appears ill, mildly lethargic but responsive. Mucous membranes dry, decreased skin turgor. Breath has fruity odor. Respirations deep and rapid. Abdomen diffusely tender, no rebound or guarding. No focal neurological deficits."
+      }
+    },
+    {
+      "case_id": "case-005-stroke",
+      "complexity": "straightforward",
+      "system": "neurological",
+      "expected_diagnosis": "Acute ischemic stroke",
+      "differential_should_include": [
+        "Acute ischemic stroke",
+        "Transient ischemic attack",
+        "Hemorrhagic stroke",
+        "Hypoglycemia",
+        "Complex migraine"
+      ],
+      "input": {
+        "age": 72,
+        "sex": "male",
+        "chief_complaint": "sudden right-sided weakness and slurred speech",
+        "duration": "90 minutes",
+        "current_medications": [
+          "warfarin 5mg daily",
+          "metoprolol 50mg twice daily",
+          "atorvastatin 20mg daily"
+        ],
+        "allergies": [],
+        "past_medical_history": [
+          "atrial fibrillation",
+          "hypertension",
+          "prior TIA 2 years ago"
+        ],
+        "vital_signs": {
+          "bp": "172/98",
+          "hr": 88,
+          "temp": 98.4,
+          "rr": 16,
+          "spo2": 97
+        },
+        "free_text": "Patient was eating breakfast 90 minutes ago when his wife noticed his speech became slurred and he dropped his fork. She helped him to the couch and called 911. Patient is right-handed. No recent head trauma, no fever, no headache. Exam: Awake, alert, follows commands. Speech is dysarthric. Right facial droop. Right upper extremity 2/5 strength, right lower extremity 3/5 strength. Left side 5/5 throughout. Sensation decreased on right. Irregular irregular pulse. INR on home testing yesterday reportedly 1.7."
+      }
+    },
+    {
+      "case_id": "case-006-appendicitis",
+      "complexity": "moderate",
+      "system": "gastrointestinal",
+      "expected_diagnosis": "Acute appendicitis",
+      "differential_should_include": [
+        "Acute appendicitis",
+        "Ovarian torsion",
+        "Ectopic pregnancy",
+        "Pelvic inflammatory disease",
+        "Mesenteric adenitis"
+      ],
+      "input": {
+        "age": 22,
+        "sex": "female",
+        "chief_complaint": "right lower quadrant abdominal pain",
+        "duration": "18 hours",
+        "current_medications": ["oral contraceptive pill"],
+        "allergies": [],
+        "past_medical_history": ["none significant"],
+        "vital_signs": {
+          "bp": "118/72",
+          "hr": 102,
+          "temp": 100.6,
+          "rr": 18,
+          "spo2": 99
+        },
+        "free_text": "Patient presents with 18 hours of abdominal pain. Pain initially started periumbilical, dull, and aching. Over the past 6 hours migrated to the right lower quadrant and became sharper. Associated with nausea and anorexia. One episode of non-bloody non-bilious vomiting. Last menstrual period 2 weeks ago. Sexually active with one partner, uses condoms inconsistently. Denies vaginal discharge or bleeding. Exam: Mildly ill-appearing. Abdomen with focal tenderness at McBurney point, voluntary guarding, positive Rovsing sign. No rebound. Pelvic exam deferred pending labs. Urine pregnancy test pending."
+      }
+    },
+    {
+      "case_id": "case-007-meningitis",
+      "complexity": "moderate",
+      "system": "infectious",
+      "expected_diagnosis": "Bacterial meningitis",
+      "differential_should_include": [
+        "Bacterial meningitis",
+        "Viral meningitis",
+        "Subarachnoid hemorrhage",
+        "Encephalitis",
+        "Migraine"
+      ],
+      "input": {
+        "age": 19,
+        "sex": "male",
+        "chief_complaint": "severe headache, fever, and neck stiffness",
+        "duration": "8 hours",
+        "current_medications": [],
+        "allergies": [],
+        "past_medical_history": [
+          "college freshman, lives in dormitory",
+          "no vaccinations beyond childhood"
+        ],
+        "vital_signs": {
+          "bp": "128/78",
+          "hr": 116,
+          "temp": 103.2,
+          "rr": 20,
+          "spo2": 98
+        },
+        "free_text": "Patient brought in by roommate after being found in bed unable to move neck and complaining of worst headache of his life. Reports the headache began suddenly approximately 8 hours ago, accompanied by fever and progressive neck stiffness. Photophobia present. One episode of vomiting. No recent travel, no animal exposures. Several students in his dormitory have reportedly had flu-like illness recently. Exam: Ill-appearing, lying still in bed with eyes closed. Nuchal rigidity present. Positive Brudzinski and Kernig signs. No focal neurological deficits. No skin rash on initial exam, but full skin survey pending. Cranial nerves intact."
+      }
+    },
+    {
+      "case_id": "case-008-aaa",
+      "complexity": "challenging",
+      "system": "cardiovascular",
+      "expected_diagnosis": "Ruptured abdominal aortic aneurysm",
+      "differential_should_include": [
+        "Ruptured abdominal aortic aneurysm",
+        "Renal colic",
+        "Acute mesenteric ischemia",
+        "Perforated viscus",
+        "Myocardial infarction"
+      ],
+      "input": {
+        "age": 71,
+        "sex": "male",
+        "chief_complaint": "severe abdominal and back pain with syncope",
+        "duration": "1 hour",
+        "current_medications": [
+          "lisinopril 20mg daily",
+          "atorvastatin 80mg daily",
+          "aspirin 81mg daily"
+        ],
+        "allergies": [],
+        "past_medical_history": [
+          "hypertension",
+          "hyperlipidemia",
+          "40 pack-year smoking history",
+          "peripheral artery disease"
+        ],
+        "vital_signs": {
+          "bp": "92/58",
+          "hr": 118,
+          "temp": 98.2,
+          "rr": 22,
+          "spo2": 96
+        },
+        "free_text": "Patient presents after a syncopal episode at home approximately 1 hour ago. He reports sudden onset severe abdominal pain radiating to the back, followed by lightheadedness and brief loss of consciousness. He was found by his wife on the floor and brought in by ambulance. Pain is constant, 9/10, tearing in quality. No prior episodes. Exam: Pale, diaphoretic, in moderate distress. Abdomen reveals a pulsatile mass in the epigastrium, tender to palpation. Bowel sounds diminished. Femoral pulses present but weak bilaterally. Extremities cool. No focal neurological deficits."
+      }
+    },
+    {
+      "case_id": "case-009-thyroid-storm",
+      "complexity": "challenging",
+      "system": "endocrine",
+      "expected_diagnosis": "Thyroid storm",
+      "differential_should_include": [
+        "Thyroid storm",
+        "Sepsis",
+        "Sympathomimetic toxicity",
+        "Pheochromocytoma crisis",
+        "Heat stroke"
+      ],
+      "input": {
+        "age": 38,
+        "sex": "female",
+        "chief_complaint": "palpitations, fever, agitation, and confusion",
+        "duration": "24 hours",
+        "current_medications": [
+          "methimazole 10mg daily (recently self-discontinued due to side effects)"
+        ],
+        "allergies": [],
+        "past_medical_history": [
+          "Graves disease (diagnosed 6 months ago)",
+          "recent upper respiratory infection 1 week ago"
+        ],
+        "vital_signs": {
+          "bp": "164/92",
+          "hr": 148,
+          "temp": 103.8,
+          "rr": 28,
+          "spo2": 97
+        },
+        "free_text": "Patient brought in by her husband for confusion, agitation, and fever. He reports she stopped taking her methimazole about 3 weeks ago because she thought it was causing nausea. Over the past 24 hours she has become progressively more anxious, sweaty, and confused. Multiple episodes of diarrhea. No focal neurological symptoms. Exam: Diaphoretic, tremulous, agitated, oriented only to person. Skin warm and flushed. Lid lag and mild proptosis. Diffuse goiter palpable. Tachycardic with irregular rhythm. Lungs clear. Abdomen soft. Hyperreflexia present in all extremities. No focal neurological deficits."
+      }
+    },
+    {
+      "case_id": "case-010-gi-bleed",
+      "complexity": "straightforward",
+      "system": "gastrointestinal",
+      "expected_diagnosis": "Upper gastrointestinal bleed",
+      "differential_should_include": [
+        "Upper gastrointestinal bleed",
+        "Peptic ulcer disease",
+        "Esophageal variceal bleed",
+        "Mallory-Weiss tear",
+        "Gastritis"
+      ],
+      "input": {
+        "age": 64,
+        "sex": "male",
+        "chief_complaint": "vomiting blood and dark stools",
+        "duration": "6 hours",
+        "current_medications": [
+          "naproxen 500mg twice daily",
+          "aspirin 81mg daily",
+          "lisinopril 10mg daily"
+        ],
+        "allergies": [],
+        "past_medical_history": [
+          "osteoarthritis",
+          "hypertension",
+          "alcohol use (4-5 drinks per day for 20 years)",
+          "no known liver disease"
+        ],
+        "vital_signs": {
+          "bp": "106/68",
+          "hr": 112,
+          "temp": 98.6,
+          "rr": 18,
+          "spo2": 98
+        },
+        "free_text": "Patient presents with multiple episodes of hematemesis over the past 6 hours, initially coffee ground in appearance then progressing to bright red blood. Also reports passing 3 dark tarry stools today. Mild epigastric discomfort but denies severe abdominal pain. No recent retching or forceful vomiting before the bleeding started. No prior history of GI bleeding. Exam: Pale, mildly tachycardic but hemodynamically stable. No scleral icterus. Abdomen soft, mild epigastric tenderness, no rebound or guarding. No hepatosplenomegaly appreciated. No ascites. No spider angiomata or palmar erythema. Rectal exam reveals melena."
+      }
+    }
+  ]
+}
