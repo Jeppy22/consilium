@@ -53,3 +53,12 @@ coverage/
 *.swp
 *.bak
 .cache/
+
+# Azurite local emulator state
+.azurite/
+
+# Local file-mode store data (Cosmos fallback for local dev)
+functions/.local-data/
+
+# Functions debug log from troubleshooting sessions
+functions-startup.log
