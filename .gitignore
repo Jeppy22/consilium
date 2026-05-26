@@ -1,0 +1,55 @@
+# --- Node / TypeScript ---
+node_modules/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+*.tsbuildinfo
+.npm/
+
+# --- Next.js ---
+.next/
+out/
+build/
+.vercel/
+next-env.d.ts
+
+# --- Environment files (anything with secrets) ---
+.env
+.env.*
+!.env.example
+!.env.local.example
+!.env.*.example
+
+# --- Azure Functions ---
+bin/
+obj/
+local.settings.json
+!local.settings.json.example
+.funcignore.local
+
+# --- Azure / Bicep ---
+.azure/
+*.bicepparam.local
+infra/main.parameters.local.json
+
+# --- IDE / OS ---
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.example.json
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- Test / coverage ---
+coverage/
+*.lcov
+.nyc_output/
+
+# --- Misc ---
+*.tmp
+*.swp
+*.bak
+.cache/
