@@ -6,7 +6,7 @@
       "value": "dev"
     },
     "location": {
-      "value": "eastus2"
+      "value": "eastus"
     },
     "cosmosThroughputMode": {
       "value": "Serverless"

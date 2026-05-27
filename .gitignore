@@ -62,3 +62,6 @@ functions/.local-data/
 
 # Functions debug log from troubleshooting sessions
 functions-startup.log
+
+# Compiled Bicep ARM template (artifact, not source)
+infra/main.json

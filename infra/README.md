@@ -1,22 +1,24 @@
 # Consilium infrastructure
 
-Bicep modules for the dev environment in East US 2.
+Bicep modules for the dev environment in East US (`eastus`).
+
+> The "Azure for Students" subscription policy disallows `eastus`. To switch back to East US 2 on a different subscription, override the `location` parameter and change `regionTag` to `'eus'` in `main.bicep`.
 
 ## Topology
 
 ```
 subscription
-└── rg-consilium-dev-eus2 (East US 2)
-    ├── consilium-dev-eus2-log              Log Analytics workspace
-    ├── consilium-dev-eus2-appi             Application Insights (workspace-based)
-    ├── kv-consilium-dev-{token6}           Key Vault (RBAC mode, purge protection ON)
-    ├── stconsilium{token6}                 Storage account (MI-only access)
-    ├── consilium-dev-eus2-cosmos-{token6}  Cosmos DB NoSQL account (Serverless, AAD-only)
+└── rg-consilium-dev-eus (East US)
+    ├── consilium-dev-eus-log              Log Analytics workspace
+    ├── consilium-dev-eus-appi             Application Insights (workspace-based)
+    ├── kv-consilium-dev-{token6}          Key Vault (RBAC mode, purge protection ON)
+    ├── stconsilium{token6}                Storage account (MI-only access)
+    ├── consilium-dev-eus-cosmos-{token6}  Cosmos DB NoSQL account (Serverless, AAD-only)
     │     └── database "consilium"
     │           ├── container "cases"   (PK /caseId)
     │           └── container "traces"  (PK /caseId, TTL 7 days)
-    ├── consilium-dev-eus2-plan             Flex Consumption plan (FC1)
-    └── consilium-dev-eus2-func-{token6}    Function App (System MI, Node 20)
+    ├── consilium-dev-eus-plan             Flex Consumption plan (FC1)
+    └── consilium-dev-eus-func-{token6}    Function App (System MI, Node 20)
 ```
 
 `{token6}` is the first 6 chars of `uniqueString(subscription().id, environmentName, location)`.
@@ -38,7 +40,7 @@ All commands run from the **repo root** with the `infra/` paths shown.
 
 ```powershell
 az deployment sub validate `
-  --location eastus2 `
+  --location eastus `
   --template-file infra/main.bicep `
   --parameters infra/main.parameters.json
 ```
@@ -47,7 +49,7 @@ az deployment sub validate `
 
 ```powershell
 az deployment sub what-if `
-  --location eastus2 `
+  --location eastus `
   --template-file infra/main.bicep `
   --parameters infra/main.parameters.json
 ```
@@ -55,11 +57,11 @@ az deployment sub what-if `
 ### Deploy
 
 ```powershell
-$deploymentName = "consilium-dev-eus2-$(Get-Date -Format yyyyMMdd-HHmmss)"
+$deploymentName = "consilium-dev-eus-$(Get-Date -Format yyyyMMdd-HHmmss)"
 
 az deployment sub create `
   --name $deploymentName `
-  --location eastus2 `
+  --location eastus `
   --template-file infra/main.bicep `
   --parameters infra/main.parameters.json
 ```
@@ -138,11 +140,11 @@ $hostname = $outputs.functionAppHostname.value
 ## Teardown
 
 ```powershell
-az group delete --name rg-consilium-dev-eus2 --yes --no-wait
+az group delete --name rg-consilium-dev-eus --yes --no-wait
 ```
 
 The Key Vault and Cosmos account will be soft-deleted (90 day retention). To fully purge the KV before the retention window:
 
 ```powershell
-az keyvault purge --name $kvName --location eastus2
+az keyvault purge --name $kvName --location eastus
 ```

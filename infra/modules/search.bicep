@@ -11,7 +11,7 @@
 @description('Azure region.')
 param location string
 
-@description('Base name: consilium-{env}-eus2.')
+@description('Base name: consilium-{env}-eus.')
 param baseName string
 
 @description('6-char uniqueness suffix.')

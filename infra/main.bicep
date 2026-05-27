@@ -1,14 +1,18 @@
 // =====================================================================
 // Consilium — subscription-scoped Bicep entry point.
 //
-// Creates rg-consilium-{env}-eus2 and provisions all RG-scoped modules.
+// Creates rg-consilium-{env}-eus and provisions all RG-scoped modules.
 //
 // Naming:
-//   Where the convention fits: consilium-{env}-eus2-<resource>
+//   Where the convention fits: consilium-{env}-eus-<resource>
 //   Where it doesn't (Azure constraints):
 //     - Storage:   no hyphens allowed       -> stconsilium{token6}
 //     - Key Vault: 24-char hard limit       -> kv-consilium-{env}-{token6}
 //   token6 = first 6 chars of uniqueString(sub id, env, location)
+//
+// Region note: eastus (not eastus2) — required by the "Azure for Students"
+// subscription's allowed-regions policy. To target eastus2, override the
+// `location` parameter AND set `regionTag` to 'eus2'.
 //
 // Search module exists at modules/search.bicep but is intentionally not
 // wired in (Phase 2). Uncomment when you start the Evidence agent.
@@ -22,7 +26,7 @@ targetScope = 'subscription'
 param environmentName string = 'dev'
 
 @description('Azure region for the resource group and all resources.')
-param location string = 'eastus2'
+param location string = 'eastus'
 
 @description('Cosmos DB throughput mode.')
 @allowed([
@@ -39,7 +43,7 @@ param tracesTtlSeconds int = 604800
 param useManagedIdentityStorage bool = true
 
 var projectName = 'consilium'
-var regionTag = 'eus2'
+var regionTag = 'eus'
 var baseName = '${projectName}-${environmentName}-${regionTag}'
 var resourceGroupName = 'rg-${baseName}'
 var resourceToken = substring(uniqueString(subscription().id, environmentName, location), 0, 6)
