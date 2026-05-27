@@ -1,0 +1,541 @@
+﻿{
+    "caseId":  "1da5db86-9cdd-42b6-8f57-80ddfdcae7af",
+    "historian":  {
+                      "bundle":  {
+                                     "resourceType":  "Bundle",
+                                     "type":  "collection",
+                                     "entry":  [
+                                                   {
+                                                       "resource":  {
+                                                                        "resourceType":  "Patient",
+                                                                        "id":  "patient-1",
+                                                                        "gender":  "male",
+                                                                        "birthDate":  "1967-01-01"
+                                                                    }
+                                                   },
+                                                   {
+                                                       "resource":  {
+                                                                        "resourceType":  "Condition",
+                                                                        "id":  "condition-htn",
+                                                                        "subject":  {
+                                                                                        "reference":  "Patient/patient-1"
+                                                                                    },
+                                                                        "code":  {
+                                                                                     "text":  "Hypertension"
+                                                                                 },
+                                                                        "clinicalStatus":  {
+                                                                                               "coding":  [
+                                                                                                              {
+                                                                                                                  "code":  "active"
+                                                                                                              }
+                                                                                                          ]
+                                                                                           }
+                                                                    }
+                                                   },
+                                                   {
+                                                       "resource":  {
+                                                                        "resourceType":  "MedicationStatement",
+                                                                        "id":  "med-lisinopril",
+                                                                        "status":  "active",
+                                                                        "subject":  {
+                                                                                        "reference":  "Patient/patient-1"
+                                                                                    },
+                                                                        "medicationCodeableConcept":  {
+                                                                                                          "text":  "Lisinopril 10mg daily"
+                                                                                                      }
+                                                                    }
+                                                   },
+                                                   {
+                                                       "resource":  {
+                                                                        "resourceType":  "Observation",
+                                                                        "id":  "obs-chief-complaint",
+                                                                        "status":  "final",
+                                                                        "subject":  {
+                                                                                        "reference":  "Patient/patient-1"
+                                                                                    },
+                                                                        "code":  {
+                                                                                     "text":  "Chief complaint"
+                                                                                 },
+                                                                        "valueString":  "chest pain for 2 hours"
+                                                                    }
+                                                   },
+                                                   {
+                                                       "resource":  {
+                                                                        "resourceType":  "Observation",
+                                                                        "id":  "obs-bp",
+                                                                        "status":  "final",
+                                                                        "subject":  {
+                                                                                        "reference":  "Patient/patient-1"
+                                                                                    },
+                                                                        "code":  {
+                                                                                     "text":  "Blood pressure"
+                                                                                 },
+                                                                        "valueString":  "148/92 mmHg"
+                                                                    }
+                                                   },
+                                                   {
+                                                       "resource":  {
+                                                                        "resourceType":  "Observation",
+                                                                        "id":  "obs-hr",
+                                                                        "status":  "final",
+                                                                        "subject":  {
+                                                                                        "reference":  "Patient/patient-1"
+                                                                                    },
+                                                                        "code":  {
+                                                                                     "text":  "Heart rate"
+                                                                                 },
+                                                                        "valueQuantity":  {
+                                                                                              "value":  96,
+                                                                                              "unit":  "bpm"
+                                                                                          }
+                                                                    }
+                                                   },
+                                                   {
+                                                       "resource":  {
+                                                                        "resourceType":  "Observation",
+                                                                        "id":  "obs-temp",
+                                                                        "status":  "final",
+                                                                        "subject":  {
+                                                                                        "reference":  "Patient/patient-1"
+                                                                                    },
+                                                                        "code":  {
+                                                                                     "text":  "Body temperature"
+                                                                                 },
+                                                                        "valueQuantity":  {
+                                                                                              "value":  37.1,
+                                                                                              "unit":  "C"
+                                                                                          }
+                                                                    }
+                                                   },
+                                                   {
+                                                       "resource":  {
+                                                                        "resourceType":  "Observation",
+                                                                        "id":  "obs-rr",
+                                                                        "status":  "final",
+                                                                        "subject":  {
+                                                                                        "reference":  "Patient/patient-1"
+                                                                                    },
+                                                                        "code":  {
+                                                                                     "text":  "Respiratory rate"
+                                                                                 },
+                                                                        "valueQuantity":  {
+                                                                                              "value":  18,
+                                                                                              "unit":  "/min"
+                                                                                          }
+                                                                    }
+                                                   },
+                                                   {
+                                                       "resource":  {
+                                                                        "resourceType":  "Observation",
+                                                                        "id":  "obs-spo2",
+                                                                        "status":  "final",
+                                                                        "subject":  {
+                                                                                        "reference":  "Patient/patient-1"
+                                                                                    },
+                                                                        "code":  {
+                                                                                     "text":  "Oxygen saturation"
+                                                                                 },
+                                                                        "valueQuantity":  {
+                                                                                              "value":  97,
+                                                                                              "unit":  "%"
+                                                                                          }
+                                                                    }
+                                                   },
+                                                   {
+                                                       "resource":  {
+                                                                        "resourceType":  "Observation",
+                                                                        "id":  "obs-substernal-pressure",
+                                                                        "status":  "final",
+                                                                        "subject":  {
+                                                                                        "reference":  "Patient/patient-1"
+                                                                                    },
+                                                                        "code":  {
+                                                                                     "text":  "Exam finding"
+                                                                                 },
+                                                                        "valueString":  "Substernal pressure"
+                                                                    }
+                                                   },
+                                                   {
+                                                       "resource":  {
+                                                                        "resourceType":  "Observation",
+                                                                        "id":  "obs-diaphoresis",
+                                                                        "status":  "final",
+                                                                        "subject":  {
+                                                                                        "reference":  "Patient/patient-1"
+                                                                                    },
+                                                                        "code":  {
+                                                                                     "text":  "Exam finding"
+                                                                                 },
+                                                                        "valueString":  "Diaphoretic"
+                                                                    }
+                                                   }
+                                               ]
+                                 },
+                      "attempts":  1,
+                      "validationErrors":  [
+
+                                           ]
+                  },
+    "differential":  {
+                         "differential":  {
+                                              "ranked_diagnoses":  [
+                                                                       {
+                                                                           "diagnosis":  "Acute coronary syndrome (NSTEMI or unstable angina)",
+                                                                           "icd10_code":  "I21.9",
+                                                                           "confidence":  0.72,
+                                                                           "reasoning":  "A 57-year-old male with hypertension presenting with 2 hours of substernal pressure and diaphoresis is a classic ACS presentation. Substernal pressure is highly characteristic of myocardial ischemia, and diaphoresis reflects sympathetic activation consistent with significant cardiac stress. Hypertension is a major independent risk factor for coronary artery disease.",
+                                                                           "supporting_findings":  [
+                                                                                                       "Substernal pressure",
+                                                                                                       "Diaphoretic",
+                                                                                                       "Chest pain for 2 hours",
+                                                                                                       "Hypertension (active)",
+                                                                                                       "Male sex, age 57",
+                                                                                                       "Heart rate 96 bpm (mild tachycardia)",
+                                                                                                       "Blood pressure 148/92 mmHg"
+                                                                                                   ],
+                                                                           "refuting_findings":  [
+                                                                                                     "Oxygen saturation 97% is relatively preserved",
+                                                                                                     "Respiratory rate 18 is not significantly elevated",
+                                                                                                     "No documented radiation to arm or jaw noted in bundle"
+                                                                                                 ]
+                                                                       },
+                                                                       {
+                                                                           "diagnosis":  "Aortic dissection (Type A or Type B)",
+                                                                           "icd10_code":  "I71.00",
+                                                                           "confidence":  0.1,
+                                                                           "reasoning":  "Aortic dissection is a critical can\u0027t-miss diagnosis in any patient with acute chest pain and hypertension. Hypertension is the leading risk factor, and substernal pressure can occasionally represent the presenting symptom. The absence of tearing/ripping quality pain description and the 2-hour duration are less characteristic but do not exclude it.",
+                                                                           "supporting_findings":  [
+                                                                                                       "Hypertension (active)",
+                                                                                                       "Blood pressure 148/92 mmHg",
+                                                                                                       "Substernal chest pain",
+                                                                                                       "Diaphoretic"
+                                                                                                   ],
+                                                                           "refuting_findings":  [
+                                                                                                     "No description of tearing or ripping quality pain",
+                                                                                                     "No pulse differential or neurological deficits documented",
+                                                                                                     "Oxygen saturation 97% without significant distress markers"
+                                                                                                 ]
+                                                                       },
+                                                                       {
+                                                                           "diagnosis":  "Pulmonary embolism",
+                                                                           "icd10_code":  "I26.99",
+                                                                           "confidence":  0.08,
+                                                                           "reasoning":  "PE can present with chest pain and diaphoresis and must be considered in any acute chest pain workup. Mild tachycardia (HR 96) is consistent, though the oxygen saturation of 97% and absence of pleuritic pain or dyspnea make a large PE less likely. The substernal pressure quality is more atypical for PE.",
+                                                                           "supporting_findings":  [
+                                                                                                       "Chest pain for 2 hours",
+                                                                                                       "Diaphoretic",
+                                                                                                       "Heart rate 96 bpm"
+                                                                                                   ],
+                                                                           "refuting_findings":  [
+                                                                                                     "Oxygen saturation 97% argues against significant V/Q mismatch",
+                                                                                                     "No documented dyspnea or pleuritic component",
+                                                                                                     "No documented leg swelling or recent immobilization"
+                                                                                                 ]
+                                                                       },
+                                                                       {
+                                                                           "diagnosis":  "Hypertensive urgency with demand ischemia",
+                                                                           "icd10_code":  "I16.0",
+                                                                           "confidence":  0.07,
+                                                                           "reasoning":  "This patient\u0027s blood pressure of 148/92 on Lisinopril represents suboptimal control and could contribute to increased myocardial oxygen demand, leading to demand ischemia. Diaphoresis and substernal pressure could result from hypertensive crisis-related cardiac stress without a fixed obstructive lesion.",
+                                                                           "supporting_findings":  [
+                                                                                                       "Blood pressure 148/92 mmHg on antihypertensive therapy",
+                                                                                                       "Hypertension (active)",
+                                                                                                       "Substernal pressure",
+                                                                                                       "Diaphoretic"
+                                                                                                   ],
+                                                                           "refuting_findings":  [
+                                                                                                     "BP of 148/92 is not severely elevated (no hypertensive emergency range \u003e180/120)",
+                                                                                                     "No end-organ damage signs documented (no altered mentation, no focal neuro findings)"
+                                                                                                 ]
+                                                                       },
+                                                                       {
+                                                                           "diagnosis":  "Acute pericarditis",
+                                                                           "icd10_code":  "I30.9",
+                                                                           "confidence":  0.05,
+                                                                           "reasoning":  "Pericarditis can present with chest pain in this age group and may occasionally mimic ACS with substernal discomfort. However, pericarditic pain is classically pleuritic and positional (worse supine, better leaning forward), neither of which is described here. Fever is absent (temp 37.1Â°C), making an inflammatory/infectious etiology somewhat less likely.",
+                                                                           "supporting_findings":  [
+                                                                                                       "Substernal chest pain",
+                                                                                                       "Male sex"
+                                                                                                   ],
+                                                                           "refuting_findings":  [
+                                                                                                     "Afebrile (temperature 37.1Â°C)",
+                                                                                                     "No pleuritic or positional quality of pain described",
+                                                                                                     "Diaphoresis is atypical for uncomplicated pericarditis"
+                                                                                                 ]
+                                                                       },
+                                                                       {
+                                                                           "diagnosis":  "Gastroesophageal reflux disease / esophageal spasm",
+                                                                           "icd10_code":  "K21.9",
+                                                                           "confidence":  0.04,
+                                                                           "reasoning":  "Esophageal spasm and severe GERD can mimic cardiac chest pain with substernal pressure, and esophageal spasm can even cause diaphoresis. However, this is a diagnosis of exclusion in a high-risk patient; the combination of diaphoresis, substernal pressure, and cardiovascular risk factors demands cardiac causes be ruled out first.",
+                                                                           "supporting_findings":  [
+                                                                                                       "Substernal pressure quality",
+                                                                                                       "Chest pain for 2 hours"
+                                                                                                   ],
+                                                                           "refuting_findings":  [
+                                                                                                     "Diaphoresis is highly atypical for GERD/esophageal cause alone",
+                                                                                                     "No mention of relationship to meals, position, or antacid use",
+                                                                                                     "High cardiovascular risk profile makes cardiac etiology far more likely"
+                                                                                                 ]
+                                                                       }
+                                                                   ],
+                                              "reasoning_summary":  "This 57-year-old hypertensive male presents with a highly concerning constellation of substernal pressure and diaphoresis of 2 hours duration â a presentation that must be treated as ACS until proven otherwise. The clinical picture is classic for myocardial ischemia, and ACS (NSTEMI or unstable angina) ranks first with high confidence. Aortic dissection is included as an essential can\u0027t-miss diagnosis given the hypertensive history and acute chest pain, even though the clinical features are less typical. Pulmonary embolism and hypertensive urgency with demand ischemia are maintained as lower-probability alternatives pending ECG, troponin, and imaging results. Benign causes such as esophageal spasm are listed last and represent diagnoses of exclusion only after life-threatening etiologies are excluded.",
+                                              "red_flags":  [
+                                                                "Substernal pressure with diaphoresis in a hypertensive male aged 57 â high-probability ACS presentation requiring immediate ECG and troponin",
+                                                                "Aortic dissection must be excluded given hypertension and acute chest pain â consider chest imaging if clinical suspicion rises",
+                                                                "Mild tachycardia (HR 96) combined with diaphoresis may indicate hemodynamic stress or early cardiogenic compromise"
+                                                            ]
+                                          },
+                         "attempts":  1,
+                         "validationErrors":  [
+
+                                              ],
+                         "warnings":  [
+
+                                      ]
+                     },
+    "evidence":  {
+                     "stub":  true,
+                     "agent":  "evidence",
+                     "message":  "Evidence agent not yet implemented (Phase 2; depends on Azure AI Search index)."
+                 },
+    "devilsAdvocate":  {
+                           "critique":  {
+                                            "critiques":  [
+                                                              {
+                                                                  "type":  "missed_diagnosis",
+                                                                  "target_diagnosis":  "overall",
+                                                                  "argument":  "STEMI is conspicuously absent as a discrete, explicitly ranked diagnosis. The differential lumps NSTEMI and unstable angina together under \u0027ACS\u0027 but does not foreground STEMI as a separate high-urgency entity. A 57-year-old male with 2 hours of substernal pressure and diaphoresis has a meaningful pre-test probability of STEMI, which carries a distinct time-critical management pathway (door-to-balloon \u003c 90 min). Conflating it with NSTEMI/UA risks anchoring the team toward a \u0027wait-for-troponin\u0027 strategy rather than immediate 12-lead ECG triage for reperfusion.",
+                                                                  "alternative_diagnosis":  "ST-elevation myocardial infarction (STEMI)",
+                                                                  "alternative_icd10_code":  "I21.3",
+                                                                  "evidence_from_bundle":  [
+                                                                                               "Substernal pressure for 2 hours",
+                                                                                               "Diaphoretic",
+                                                                                               "Heart rate 96 bpm (sympathetic activation)",
+                                                                                               "Male sex, age 57",
+                                                                                               "Hypertension (active)"
+                                                                                           ],
+                                                                  "severity":  "high"
+                                                              },
+                                                              {
+                                                                  "type":  "overconfidence",
+                                                                  "target_diagnosis":  "Acute coronary syndrome (NSTEMI or unstable angina)",
+                                                                  "argument":  "A confidence of 0.72 is assigned on the basis of history and exam alone, with no ECG, no troponin, and no imaging in the bundle. While the clinical presentation is compelling, pre-test probability for ACS in undifferentiated chest pain even in high-risk demographics rarely exceeds 50â60% before any testing. Overstating confidence this early could short-circuit a thorough workup and cause clinicians to under-pursue aortic dissection or PE, for which anticoagulation or thrombolytics given in error would be catastrophic.",
+                                                                  "evidence_from_bundle":  [
+                                                                                               "No ECG result documented",
+                                                                                               "No troponin result documented",
+                                                                                               "No imaging result documented",
+                                                                                               "Blood pressure 148/92 mmHg â not arm differential recorded"
+                                                                                           ],
+                                                                  "severity":  "high"
+                                                              },
+                                                              {
+                                                                  "type":  "missed_diagnosis",
+                                                                  "target_diagnosis":  "overall",
+                                                                  "argument":  "Vasospastic (Prinzmetal) angina is not mentioned anywhere in the differential. This entity occurs in men in their 50s, can cause severe substernal pressure with diaphoresis, typically occurs at rest (as this presentation does â no exertional trigger is noted), and requires a distinct management approach (calcium channel blockers rather than beta-blockers, which can worsen spasm). In a patient on only an ACE inhibitor with no documented exertional component, Prinzmetal angina deserves at minimum a mention.",
+                                                                  "alternative_diagnosis":  "Vasospastic angina (Prinzmetal angina)",
+                                                                  "alternative_icd10_code":  "I20.1",
+                                                                  "evidence_from_bundle":  [
+                                                                                               "Substernal pressure at rest",
+                                                                                               "No exertional trigger documented",
+                                                                                               "Diaphoretic",
+                                                                                               "Male sex, age 57"
+                                                                                           ],
+                                                                  "severity":  "medium"
+                                                              },
+                                                              {
+                                                                  "type":  "weak_reasoning",
+                                                                  "target_diagnosis":  "Aortic dissection (Type A or Type B)",
+                                                                  "argument":  "The 0.10 confidence for aortic dissection is defensible, but the refuting rationale leans too heavily on the absence of documented \u0027tearing or ripping\u0027 quality â a finding present in only ~50% of dissections. More critically, the bundle contains no documented bilateral arm BP comparison, no pulse differential assessment, and no notation of radiation to the back, all of which are the actual high-yield discriminators. The differential should explicitly flag that these data points are *absent from documentation* rather than *absent clinically*, which are very different scenarios.",
+                                                                  "evidence_from_bundle":  [
+                                                                                               "No bilateral arm blood pressure comparison documented",
+                                                                                               "No pulse differential documented",
+                                                                                               "No back pain or radiation to back documented",
+                                                                                               "Hypertension (active) â leading risk factor for dissection",
+                                                                                               "Blood pressure 148/92 mmHg"
+                                                                                           ],
+                                                                  "severity":  "medium"
+                                                              },
+                                                              {
+                                                                  "type":  "ignored_finding",
+                                                                  "target_diagnosis":  "Pulmonary embolism",
+                                                                  "argument":  "The differential correctly notes HR 96 as supporting PE, but dismisses it too readily. An O2 sat of 97% does not exclude PE â massive PE can present with preserved saturation early, and submassive PE commonly does. More importantly, the bundle documents no risk stratification using Wells criteria: there is no notation of DVT symptoms, recent surgery, immobilization, prior PE, or malignancy. Dismissing PE primarily on the basis of O2 sat 97% and absence of pleuritic pain, without a documented Wells score or d-dimer, is incomplete reasoning.",
+                                                                  "evidence_from_bundle":  [
+                                                                                               "Heart rate 96 bpm",
+                                                                                               "Oxygen saturation 97% â does not exclude submassive PE",
+                                                                                               "No Wells criteria components documented",
+                                                                                               "No d-dimer result in bundle",
+                                                                                               "No lower extremity exam findings documented"
+                                                                                           ],
+                                                                  "severity":  "medium"
+                                                              },
+                                                              {
+                                                                  "type":  "weak_reasoning",
+                                                                  "target_diagnosis":  "Acute pericarditis",
+                                                                  "argument":  "The differential correctly ranks pericarditis low, but its primary refuting argument â temperature 37.1Â°C making inflammatory etiology less likely â is weak. Viral pericarditis frequently presents without fever, and the temperature threshold used here is too simplistic. The stronger refuting arguments (no friction rub documented, no positional or pleuritic character, diaphoresis more consistent with ischemia) are mentioned but not weighted appropriately as the primary reasons for deprioritization.",
+                                                                  "evidence_from_bundle":  [
+                                                                                               "Temperature 37.1Â°C â afebrile but not a reliable exclusion criterion",
+                                                                                               "No pericardial friction rub documented",
+                                                                                               "No positional or pleuritic component described"
+                                                                                           ],
+                                                                  "severity":  "low"
+                                                              }
+                                                          ],
+                                            "overall_assessment":  "needs_revision",
+                                            "assessment_reasoning":  "The differential correctly identifies ACS as the primary concern and includes aortic dissection as a can\u0027t-miss, demonstrating sound clinical instinct. However, the failure to separately enumerate STEMI as a distinct diagnosis with its own reperfusion-critical time pathway is a meaningful patient safety gap â conflating it with NSTEMI/UA could delay door-to-balloon thinking. The 0.72 confidence assigned to ACS before any ECG, troponin, or imaging is premature and risks anchoring the team\u0027s approach. Additionally, the weak handling of aortic dissection\u0027s refuting criteria (over-relying on pain quality rather than flagging absent exam data) and insufficient PE risk stratification reasoning leave clinically important gaps. The differential is a reasonable starting framework but requires revision before guiding management decisions."
+                                        },
+                           "attempts":  1,
+                           "validationErrors":  [
+
+                                                ],
+                           "warnings":  [
+
+                                        ]
+                       },
+    "synthesizer":  {
+                        "synthesis":  {
+                                          "final_ranked_diagnoses":  [
+                                                                         {
+                                                                             "diagnosis":  "ST-elevation myocardial infarction (STEMI)",
+                                                                             "icd10_code":  "I21.3",
+                                                                             "final_confidence":  0.35,
+                                                                             "confidence_rationale":  "The devil\u0027s advocate correctly flagged STEMI as a discrete, time-critical entity that must be foregrounded separately from NSTEMI/UA. A 57-year-old hypertensive male with 2 hours of substernal pressure, diaphoresis, and mild tachycardia has a meaningful pre-test probability of STEMI, which demands immediate 12-lead ECG rather than a \u0027wait-for-troponin\u0027 posture. Confidence is set at 0.35 reflecting a high-urgency pre-test suspicion without ECG confirmation."
+                                                                         },
+                                                                         {
+                                                                             "diagnosis":  "NSTEMI or unstable angina",
+                                                                             "icd10_code":  "I21.4",
+                                                                             "final_confidence":  0.3,
+                                                                             "confidence_rationale":  "The original differential\u0027s 0.72 was premature given the absence of ECG, troponin, and imaging data; confidence is redistributed between STEMI and NSTEMI/UA. Combined, these ACS subtypes remain the dominant diagnostic concern (~0.65 aggregate), but distinguishing them requires ECG results unavailable at this time."
+                                                                         },
+                                                                         {
+                                                                             "diagnosis":  "Aortic dissection (Type A or Type B)",
+                                                                             "icd10_code":  "I71.00",
+                                                                             "final_confidence":  0.12,
+                                                                             "confidence_rationale":  "Confidence is modestly increased from 0.10 because the devil\u0027s advocate appropriately identified that absent bilateral arm BP, pulse differential, and back radiation documentation represent data gaps rather than negative findings. Hypertension remains the leading risk factor for dissection and cannot be dismissed on pain quality alone, which is present in only ~50% of dissections."
+                                                                         },
+                                                                         {
+                                                                             "diagnosis":  "Vasospastic (Prinzmetal) angina",
+                                                                             "icd10_code":  "I20.1",
+                                                                             "final_confidence":  0.09,
+                                                                             "confidence_rationale":  "Added per the devil\u0027s advocate critique; this entity occurs in men in their 50s, causes substernal pressure with diaphoresis at rest, and has no exertional trigger documented in this bundle. It requires distinct management (CCBs rather than beta-blockers) and deserves explicit enumeration, though it is lower probability than obstructive ACS."
+                                                                         },
+                                                                         {
+                                                                             "diagnosis":  "Pulmonary embolism",
+                                                                             "icd10_code":  "I26.99",
+                                                                             "final_confidence":  0.08,
+                                                                             "confidence_rationale":  "Confidence held near the differential\u0027s 0.08; O2 sat of 97% does not exclude submassive PE and the bundle lacks Wells criteria components, so dismissal based on saturation alone is incomplete. However, the substernal pressure quality and clinical gestalt still favor ACS over PE at this stage."
+                                                                         },
+                                                                         {
+                                                                             "diagnosis":  "Acute pericarditis",
+                                                                             "icd10_code":  "I30.9",
+                                                                             "final_confidence":  0.04,
+                                                                             "confidence_rationale":  "Confidence kept low; the stronger refuting evidence is the absence of pleuritic or positional pain quality, no documented friction rub, and the presence of diaphoresis â a feature more consistent with ischemia than pericarditis. The afebrile temperature alone is not a reliable exclusion criterion as acknowledged by the devil\u0027s advocate."
+                                                                         },
+                                                                         {
+                                                                             "diagnosis":  "Esophageal spasm / GERD",
+                                                                             "icd10_code":  "K21.9",
+                                                                             "final_confidence":  0.02,
+                                                                             "confidence_rationale":  "Remains a diagnosis of strict exclusion; diaphoresis, cardiovascular risk profile, and symptom duration make a purely esophageal etiology very unlikely. Must not be entertained until all life-threatening cardiac and vascular causes are excluded."
+                                                                         }
+                                                                     ],
+                                          "clinical_impression":  "This 57-year-old hypertensive male presents with a 2-hour history of substernal pressure and diaphoresis â a constellation that is highly characteristic of acute myocardial ischemia and mandates immediate emergency evaluation. His known hypertension on Lisinopril with a blood pressure of 148/92 mmHg indicates suboptimally controlled vascular disease, a major independent risk factor for both coronary artery disease and aortic dissection. The diaphoresis in particular reflects sympathetic activation consistent with significant hemodynamic stress, elevating concern for an ischemic event beyond simple chest wall or GI etiology. STEMI must be separated as a discrete, time-critical diagnosis from NSTEMI/UA: the former requires door-to-balloon within 90 minutes and cannot wait for troponin results, while the latter permits a slightly more deliberate biomarker-guided strategy. Critically, no ECG, troponin, or imaging data are available in the current record, meaning pre-test probability alone is driving the assessment â a significant limitation that demands urgent diagnostic action rather than diagnostic closure. Aortic dissection remains a cannot-miss consideration; the bundle lacks bilateral arm BP comparison, pulse differential assessment, and back radiation documentation, so its exclusion is incomplete based on current data. Vasospastic angina is a lower-probability but clinically important alternative given the rest-onset pattern and the management implication of avoiding beta-blockers if spasm is suspected. Pulmonary embolism cannot be adequately risk-stratified without Wells criteria components, though the substernal pressure character and clinical gestalt favor ACS as the primary concern.",
+                                          "next_steps":  [
+                                                             {
+                                                                 "category":  "immediate_action",
+                                                                 "action":  "Obtain a 12-lead ECG within 10 minutes of presentation and have a cardiologist review immediately for ST-elevation, LBBB, or posterior changes that would trigger STEMI protocol and cath lab activation.",
+                                                                 "rationale":  "STEMI must be identified or excluded immediately; door-to-balloon time \u003c 90 minutes is the standard of care and ECG is the gating step.",
+                                                                 "urgency":  "emergent"
+                                                             },
+                                                             {
+                                                                 "category":  "immediate_action",
+                                                                 "action":  "Establish IV access, place patient on continuous cardiac monitoring and pulse oximetry, administer supplemental oxygen if SpO2 drops below 94%, and obtain a 12-lead rhythm strip simultaneously with the ECG.",
+                                                                 "rationale":  "Hemodynamic monitoring and IV access are prerequisites for both emergent reperfusion therapy and rapid resuscitation if the patient decompensates.",
+                                                                 "urgency":  "emergent"
+                                                             },
+                                                             {
+                                                                 "category":  "diagnostic_workup",
+                                                                 "action":  "Draw stat high-sensitivity troponin I or T (serial at 0 and 1â2 hours), BMP, CBC, coagulation panel, BNP, and D-dimer; simultaneously measure bilateral arm blood pressures and document pulse differential to assess for aortic dissection.",
+                                                                 "rationale":  "Troponin is required to confirm NSTEMI if STEMI is excluded by ECG; bilateral arm BP and D-dimer address aortic dissection and PE risk simultaneously in a single blood draw workflow.",
+                                                                 "urgency":  "emergent"
+                                                             },
+                                                             {
+                                                                 "category":  "diagnostic_workup",
+                                                                 "action":  "Obtain a portable chest X-ray to evaluate for widened mediastinum (dissection), pulmonary vascular congestion (ACS with heart failure), or alternative thoracic pathology.",
+                                                                 "rationale":  "A widened mediastinum on CXR would substantially raise suspicion for aortic dissection and alter the management pathway before CT can be obtained.",
+                                                                 "urgency":  "urgent"
+                                                             },
+                                                             {
+                                                                 "category":  "consultation",
+                                                                 "action":  "Activate cardiology consult immediately; if ECG shows ST-elevation or new LBBB, activate the cath lab and STEMI protocol without waiting for troponin results.",
+                                                                 "rationale":  "Time-to-reperfusion is the primary determinant of myocardial salvage in STEMI; cardiology involvement must not be delayed pending biomarker confirmation.",
+                                                                 "urgency":  "emergent"
+                                                             },
+                                                             {
+                                                                 "category":  "diagnostic_workup",
+                                                                 "action":  "If aortic dissection cannot be excluded clinically after ECG and bilateral arm BP assessment, obtain CT angiography of the chest with contrast prior to antiplatelet or anticoagulant administration.",
+                                                                 "rationale":  "Antiplatelet and thrombolytic therapy given in the setting of unrecognized aortic dissection carries catastrophic hemorrhagic risk; CTA must precede empiric ACS treatment if dissection remains plausible.",
+                                                                 "urgency":  "urgent"
+                                                             },
+                                                             {
+                                                                 "category":  "monitoring",
+                                                                 "action":  "Monitor heart rate, blood pressure, and rhythm continuously; reassess hemodynamic status every 15 minutes until diagnosis is established, with particular attention to any drop in BP, new pulse deficit, or evolving ST changes.",
+                                                                 "rationale":  "Early hemodynamic deterioration may signal cardiogenic shock, aortic rupture, or massive PE and would mandate immediate escalation of care.",
+                                                                 "urgency":  "urgent"
+                                                             },
+                                                             {
+                                                                 "category":  "patient_education",
+                                                                 "action":  "Once the patient is stabilized and a diagnosis is established, counsel him on the importance of blood pressure control â his BP of 148/92 on Lisinopril indicates inadequate control â and discuss signs of ACS warranting immediate ED return.",
+                                                                 "rationale":  "Suboptimal hypertension management is a modifiable risk factor that contributed to this presentation and requires structured follow-up regardless of the acute diagnosis.",
+                                                                 "urgency":  "routine"
+                                                             }
+                                                         ],
+                                          "acknowledged_critiques":  [
+                                                                         {
+                                                                             "critique_type":  "missed_diagnosis",
+                                                                             "response":  "accepted",
+                                                                             "reasoning":  "STEMI has been separated as a discrete, explicitly ranked first-line diagnosis in the final synthesis. Conflating STEMI with NSTEMI/UA creates a genuine patient safety risk by orienting the team toward biomarker-driven triage rather than the time-critical ECG-first, door-to-balloon pathway that STEMI demands."
+                                                                         },
+                                                                         {
+                                                                             "critique_type":  "overconfidence",
+                                                                             "response":  "accepted",
+                                                                             "reasoning":  "The original 0.72 ACS confidence has been redistributed between STEMI (0.35) and NSTEMI/UA (0.30), reflecting that no ECG, troponin, or imaging data are available. This redistribution preserves the overall high clinical suspicion for ACS (~0.65 aggregate) while avoiding premature diagnostic closure and ensuring dissection and PE workup proceeds in parallel."
+                                                                         },
+                                                                         {
+                                                                             "critique_type":  "missed_diagnosis",
+                                                                             "response":  "accepted",
+                                                                             "reasoning":  "Vasospastic (Prinzmetal) angina has been added to the differential at confidence 0.09. Its rest-onset pattern, absence of documented exertional trigger, and distinct management implication (preference for calcium channel blockers, avoidance of beta-blockers) justify explicit enumeration in a patient on only an ACE inhibitor."
+                                                                         },
+                                                                         {
+                                                                             "critique_type":  "weak_reasoning",
+                                                                             "response":  "accepted",
+                                                                             "reasoning":  "The aortic dissection entry now explicitly flags that absent bilateral arm BP, pulse differential, and back radiation are documentation gaps rather than negative clinical findings. Confidence for dissection has been modestly raised to 0.12 and a next step for bilateral arm BP measurement and conditional CTA has been added to address this data absence."
+                                                                         },
+                                                                         {
+                                                                             "critique_type":  "ignored_finding",
+                                                                             "response":  "accepted",
+                                                                             "reasoning":  "PE confidence is maintained at 0.08 but the synthesis now explicitly notes that O2 sat 97% does not exclude submassive PE and that Wells criteria components are entirely absent from the bundle. D-dimer has been added to the emergent laboratory workup to provide appropriate risk stratification."
+                                                                         },
+                                                                         {
+                                                                             "critique_type":  "weak_reasoning",
+                                                                             "response":  "accepted",
+                                                                             "reasoning":  "The pericarditis entry now deprioritizes the temperature argument and instead foregrounds the absence of pleuritic or positional pain character, absence of documented friction rub, and the presence of diaphoresis as the primary reasons for low ranking. The afebrile temperature is acknowledged as an unreliable exclusion criterion."
+                                                                         }
+                                                                     ],
+                                          "red_flags_summary":  [
+                                                                    "Substernal pressure with diaphoresis in a 57-year-old hypertensive male â high-probability ACS presentation; STEMI must be excluded by immediate 12-lead ECG within 10 minutes",
+                                                                    "No ECG, troponin, or imaging in the current record â diagnostic workup has not yet begun and the diagnosis remains entirely pre-test-probability-based",
+                                                                    "Aortic dissection not yet excluded â bilateral arm BP comparison, pulse differential, and back radiation history are absent from documentation (data gaps, not confirmed negatives)",
+                                                                    "Mild tachycardia (HR 96) combined with diaphoresis may reflect sympathetic activation from significant myocardial ischemia or early hemodynamic compromise",
+                                                                    "Antiplatelet/anticoagulant/thrombolytic therapy must NOT be administered empirically until aortic dissection is excluded, given the catastrophic hemorrhagic risk of those agents in dissection"
+                                                                ],
+                                          "educational_note":  "In a patient with acute chest pain who may have STEMI, NSTEMI, or aortic dissection, the ECG is the gating decision point â not the troponin. Separating STEMI from other ACS subtypes matters enormously: STEMI mandates immediate cath lab activation (door-to-balloon \u003c 90 min) and cannot wait for biomarker results, while NSTEMI/UA permits a biomarker-guided approach. Critically, empiric antiplatelet or thrombolytic therapy administered before excluding aortic dissection can convert a survivable dissection into a fatal hemorrhage â always obtain bilateral arm blood pressures and assess for back radiation before committing to ACS pharmacotherapy in any hypertensive patient with acute chest pain."
+                                      },
+                        "attempts":  1,
+                        "validationErrors":  [
+
+                                             ],
+                        "warnings":  [
+
+                                     ]
+                    }
+}

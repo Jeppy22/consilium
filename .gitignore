@@ -65,3 +65,9 @@ functions-startup.log
 
 # Compiled Bicep ARM template (artifact, not source)
 infra/main.json
+
+# Compiled TypeScript output (Functions)
+functions/dist/
+
+# Local demo run captures (not source code)
+first-real-run.json
