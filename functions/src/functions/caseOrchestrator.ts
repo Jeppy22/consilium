@@ -30,10 +30,10 @@ df.app.orchestration('caseOrchestrator', function* (context: OrchestrationContex
 
   const synthesizer = yield context.df.callActivity('synthesizer', {
     caseId,
-    historian,
-    differential,
-    evidence,
-    devilsAdvocate,
+    historianOutput: historian,
+    differentialOutput: differential.differential,
+    devilsAdvocateOutput: devilsAdvocate.critique,
+    evidenceOutput: evidence,
   });
 
   return {

@@ -188,3 +188,47 @@ export const DevilsAdvocateOutputSchema = z.object({
 
 export type DevilsAdvocateCritique = z.infer<typeof DevilsAdvocateCritiqueSchema>;
 export type DevilsAdvocateOutput = z.infer<typeof DevilsAdvocateOutputSchema>;
+
+// ---------------------------------------------------------------------
+// Synthesizer — final synthesized clinical reasoning note.
+// ---------------------------------------------------------------------
+
+export const FinalRankedDiagnosisSchema = z.object({
+  diagnosis: z.string().min(1),
+  icd10_code: z.string().optional(),
+  final_confidence: z.number().min(0).max(1),
+  confidence_rationale: z.string().min(1),
+});
+
+export const NextStepSchema = z.object({
+  category: z.enum([
+    'immediate_action',
+    'diagnostic_workup',
+    'monitoring',
+    'consultation',
+    'patient_education',
+  ]),
+  action: z.string().min(1),
+  rationale: z.string().min(1),
+  urgency: z.enum(['emergent', 'urgent', 'routine']),
+});
+
+export const AcknowledgedCritiqueSchema = z.object({
+  critique_type: z.string().min(1),
+  response: z.enum(['accepted', 'partially_accepted', 'rejected']),
+  reasoning: z.string().min(1),
+});
+
+export const SynthesisOutputSchema = z.object({
+  final_ranked_diagnoses: z.array(FinalRankedDiagnosisSchema).min(3).max(7),
+  clinical_impression: z.string().min(1),
+  next_steps: z.array(NextStepSchema).min(2).max(8),
+  acknowledged_critiques: z.array(AcknowledgedCritiqueSchema),
+  red_flags_summary: z.array(z.string()),
+  educational_note: z.string().min(1),
+});
+
+export type FinalRankedDiagnosis = z.infer<typeof FinalRankedDiagnosisSchema>;
+export type NextStep = z.infer<typeof NextStepSchema>;
+export type AcknowledgedCritique = z.infer<typeof AcknowledgedCritiqueSchema>;
+export type SynthesisOutput = z.infer<typeof SynthesisOutputSchema>;
