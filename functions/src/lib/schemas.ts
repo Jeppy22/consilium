@@ -158,3 +158,33 @@ export const DifferentialOutputSchema = z.object({
 
 export type DifferentialDiagnosis = z.infer<typeof DifferentialDiagnosisSchema>;
 export type DifferentialOutput = z.infer<typeof DifferentialOutputSchema>;
+
+// ---------------------------------------------------------------------
+// Devil's Advocate — adversarial critique of the Differential output.
+// ---------------------------------------------------------------------
+
+export const DevilsAdvocateCritiqueSchema = z.object({
+  type: z.enum([
+    'anchoring_bias',
+    'missed_diagnosis',
+    'weak_reasoning',
+    'ignored_finding',
+    'overconfidence',
+  ]),
+  target_diagnosis: z.string().min(1),
+  argument: z.string().min(1),
+  alternative_diagnosis: z.string().optional(),
+  alternative_icd10_code: z.string().optional(),
+  evidence_from_bundle: z.array(z.string()),
+  severity: z.enum(['low', 'medium', 'high']),
+});
+
+export const DevilsAdvocateOutputSchema = z.object({
+  critiques: z.array(DevilsAdvocateCritiqueSchema).min(2).max(6),
+  overall_assessment: z.enum(['solid', 'needs_revision', 'concerning']),
+  assessment_reasoning: z.string().min(1),
+  agreed_top_diagnosis: z.string().optional(),
+});
+
+export type DevilsAdvocateCritique = z.infer<typeof DevilsAdvocateCritiqueSchema>;
+export type DevilsAdvocateOutput = z.infer<typeof DevilsAdvocateOutputSchema>;
