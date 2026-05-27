@@ -135,3 +135,26 @@ export type Patient = z.infer<typeof PatientSchema>;
 export type Condition = z.infer<typeof ConditionSchema>;
 export type Observation = z.infer<typeof ObservationSchema>;
 export type MedicationStatement = z.infer<typeof MedicationStatementSchema>;
+
+// ---------------------------------------------------------------------
+// Differential — output of the Differential agent.
+// Ranked clinical differential diagnoses with confidence and reasoning.
+// ---------------------------------------------------------------------
+
+export const DifferentialDiagnosisSchema = z.object({
+  diagnosis: z.string().min(1),
+  icd10_code: z.string().optional(),
+  confidence: z.number().min(0).max(1),
+  reasoning: z.string().min(1),
+  supporting_findings: z.array(z.string()),
+  refuting_findings: z.array(z.string()),
+});
+
+export const DifferentialOutputSchema = z.object({
+  ranked_diagnoses: z.array(DifferentialDiagnosisSchema).min(3).max(7),
+  reasoning_summary: z.string().min(1),
+  red_flags: z.array(z.string()),
+});
+
+export type DifferentialDiagnosis = z.infer<typeof DifferentialDiagnosisSchema>;
+export type DifferentialOutput = z.infer<typeof DifferentialOutputSchema>;

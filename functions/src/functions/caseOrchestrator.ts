@@ -14,7 +14,7 @@ df.app.orchestration('caseOrchestrator', function* (context: OrchestrationContex
 
   const differential = yield context.df.callActivity('differential', {
     caseId,
-    fhirBundle: historian.bundle,
+    historianOutput: historian,
   });
 
   const evidence = yield context.df.callActivity('evidence', {
