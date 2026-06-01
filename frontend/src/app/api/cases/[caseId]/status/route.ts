@@ -1,4 +1,7 @@
-import { NextRequest } from 'next/server';
+﻿import { NextRequest } from 'next/server';
+
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export async function GET(
   request: NextRequest,
@@ -19,7 +22,7 @@ export async function GET(
 
   const upstream = await fetch(
     `${base}/api/cases/${encodeURIComponent(caseId)}/status?instanceId=${encodeURIComponent(instanceId)}`,
-    { headers: { 'x-api-key': apiKey } }
+    { headers: { 'x-api-key': apiKey }, cache: 'no-store' }
   );
 
   const text = await upstream.text();
@@ -27,6 +30,7 @@ export async function GET(
     status: upstream.status,
     headers: {
       'content-type': upstream.headers.get('content-type') ?? 'application/json',
+      'cache-control': 'no-store',
     },
   });
 }
