@@ -1,10 +1,19 @@
-// Dual-mode store: Cosmos DB when COSMOS_ENDPOINT is set (deployed), local
-// JSON files when not (local dev without the Cosmos emulator). Both expose
-// the same Store interface so callers don't branch.
+// Dual-mode store: Azure Table Storage when STORAGE_ACCOUNT_NAME is set
+// (deployed), local JSON files when not (local dev). Both expose the same
+// Store interface so callers don't branch.
+//
+// Filename kept as cosmos.ts to avoid churning every import site after the
+// Cosmos → Table Storage migration. The implementation underneath is Table
+// Storage; "Cosmos" remains only in the filename.
 
 import { promises as fs } from 'fs';
 import path from 'path';
-import { CosmosClient, type Container, type Database } from '@azure/cosmos';
+import {
+  TableClient,
+  TableServiceClient,
+  odata,
+  RestError,
+} from '@azure/data-tables';
 import { DefaultAzureCredential } from '@azure/identity';
 
 export type CaseRecord = {
@@ -33,56 +42,143 @@ export interface Store {
 }
 
 // ---------------------------------------------------------------------
-// Cosmos-backed store (deployed)
+// Table-backed store (deployed)
+//
+// TODO: Table Storage limits each property to 64KB and an entity to 1MB.
+// Our largest agent outputs (synthesizer) measure ~12–27KB serialized so
+// we're well within bounds. If a future agent's output grows, split it
+// across multiple chunked properties or move to Blob with a pointer.
 // ---------------------------------------------------------------------
 
-class CosmosStore implements Store {
-  constructor(private cases: Container, private traces: Container) {}
+const CASES_TABLE = 'cases';
+const TRACES_TABLE = 'traces';
 
-  static async create(): Promise<CosmosStore> {
-    const endpoint = process.env.COSMOS_ENDPOINT;
-    if (!endpoint) throw new Error('COSMOS_ENDPOINT must be set for CosmosStore');
+type CaseEntity = {
+  partitionKey: string;
+  rowKey: string;
+  input: string;
+  createdAt: string;
+};
 
-    const dbName = process.env.COSMOS_DATABASE ?? 'consilium';
-    const casesName = process.env.COSMOS_CASES_CONTAINER ?? 'cases';
-    const tracesName = process.env.COSMOS_TRACES_CONTAINER ?? 'traces';
+type TraceEntity = {
+  partitionKey: string;
+  rowKey: string;
+  step: number;
+  agent: TraceEntry['agent'];
+  status: TraceEntry['status'];
+  input?: string;
+  output?: string;
+  error?: string;
+  startedAt: string;
+  completedAt?: string;
+};
 
+class TableStore implements Store {
+  constructor(
+    private cases: TableClient,
+    private traces: TableClient
+  ) {}
+
+  static async create(): Promise<TableStore> {
+    const account = process.env.STORAGE_ACCOUNT_NAME;
+    if (!account) {
+      throw new Error('STORAGE_ACCOUNT_NAME must be set for TableStore');
+    }
+
+    const endpoint = `https://${account}.table.core.windows.net`;
     const credential = new DefaultAzureCredential();
-    const client = new CosmosClient({ endpoint, aadCredentials: credential });
-    const db: Database = client.database(dbName);
 
-    return new CosmosStore(db.container(casesName), db.container(tracesName));
+    const service = new TableServiceClient(endpoint, credential);
+    await ensureTable(service, CASES_TABLE);
+    await ensureTable(service, TRACES_TABLE);
+
+    const cases = new TableClient(endpoint, CASES_TABLE, credential);
+    const traces = new TableClient(endpoint, TRACES_TABLE, credential);
+    return new TableStore(cases, traces);
   }
 
   async writeCase(record: CaseRecord): Promise<void> {
-    await this.cases.items.upsert({ id: record.caseId, ...record });
+    const entity: CaseEntity = {
+      partitionKey: record.caseId,
+      rowKey: 'case',
+      input: JSON.stringify(record.input),
+      createdAt: record.createdAt,
+    };
+    await this.cases.upsertEntity(entity, 'Replace');
   }
 
   async writeTrace(entry: TraceEntry): Promise<void> {
-    const id = `${entry.caseId}-${entry.step}-${entry.agent}-${entry.status}`;
-    await this.traces.items.upsert({ id, ...entry });
+    const entity: TraceEntity = {
+      partitionKey: entry.caseId,
+      rowKey: `${entry.step}-${entry.agent}-${entry.status}`,
+      step: entry.step,
+      agent: entry.agent,
+      status: entry.status,
+      startedAt: entry.startedAt,
+    };
+    if (entry.input !== undefined) entity.input = JSON.stringify(entry.input);
+    if (entry.output !== undefined) entity.output = JSON.stringify(entry.output);
+    if (entry.error !== undefined) entity.error = entry.error;
+    if (entry.completedAt !== undefined) entity.completedAt = entry.completedAt;
+    await this.traces.upsertEntity(entity, 'Replace');
   }
 
   async getCase(caseId: string): Promise<CaseRecord | null> {
     try {
-      const { resource } = await this.cases.item(caseId, caseId).read<CaseRecord>();
-      return resource ?? null;
-    } catch {
-      return null;
+      const e = await this.cases.getEntity<CaseEntity>(caseId, 'case');
+      return {
+        caseId,
+        input: safeParseJson(e.input),
+        createdAt: e.createdAt,
+      };
+    } catch (err) {
+      if (err instanceof RestError && err.statusCode === 404) return null;
+      throw err;
     }
   }
 
   async getTraces(caseId: string): Promise<TraceEntry[]> {
-    const { resources } = await this.traces.items
-      .query<TraceEntry>(
-        {
-          query: 'SELECT * FROM c WHERE c.caseId = @cid ORDER BY c.step, c.startedAt',
-          parameters: [{ name: '@cid', value: caseId }],
-        },
-        { partitionKey: caseId }
-      )
-      .fetchAll();
-    return resources;
+    const entries: TraceEntry[] = [];
+    const iter = this.traces.listEntities<TraceEntity>({
+      queryOptions: { filter: odata`PartitionKey eq ${caseId}` },
+    });
+    for await (const e of iter) {
+      entries.push({
+        caseId,
+        step: e.step,
+        agent: e.agent,
+        status: e.status,
+        input: e.input !== undefined ? safeParseJson(e.input) : undefined,
+        output: e.output !== undefined ? safeParseJson(e.output) : undefined,
+        error: e.error,
+        startedAt: e.startedAt,
+        completedAt: e.completedAt,
+      });
+    }
+    entries.sort((a, b) => {
+      if (a.step !== b.step) return a.step - b.step;
+      return a.startedAt.localeCompare(b.startedAt);
+    });
+    return entries;
+  }
+}
+
+async function ensureTable(service: TableServiceClient, name: string): Promise<void> {
+  try {
+    await service.createTable(name);
+  } catch (err) {
+    if (err instanceof RestError && (err.statusCode === 409 || err.code === 'TableAlreadyExists')) {
+      return;
+    }
+    throw err;
+  }
+}
+
+function safeParseJson(s: string): unknown {
+  try {
+    return JSON.parse(s);
+  } catch {
+    return s;
   }
 }
 
@@ -146,8 +242,8 @@ let cachedStore: Store | null = null;
 export async function getStore(): Promise<Store> {
   if (cachedStore) return cachedStore;
 
-  if (process.env.COSMOS_ENDPOINT) {
-    cachedStore = await CosmosStore.create();
+  if (process.env.STORAGE_ACCOUNT_NAME) {
+    cachedStore = await TableStore.create();
   } else {
     const localDir =
       process.env.LOCAL_DATA_DIR ?? path.resolve(process.cwd(), '.local-data');

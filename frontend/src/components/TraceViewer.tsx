@@ -118,14 +118,14 @@ export function TraceViewer({
 
   if (error) {
     return (
-      <p className="rounded-md border border-red-200 bg-red-50 p-3 text-sm text-red-700">
+      <p className="rounded-lg border border-red-500/30 bg-red-500/10 p-3 text-sm text-red-200">
         {error}
       </p>
     );
   }
   if (!status) {
     return (
-      <p className="flex items-center gap-2 text-sm text-slate-500">
+      <p className="flex items-center gap-2 text-sm text-zinc-400">
         <Loader2 className="h-4 w-4 animate-spin" />
         Loading status…
       </p>
@@ -175,36 +175,41 @@ function StatusHeader({
   elapsedMs: number;
 }) {
   return (
-    <div className="flex flex-wrap items-center justify-between gap-3 rounded-md border border-slate-200 bg-slate-50/60 px-4 py-3">
-      <div className="flex flex-wrap items-center gap-4">
-        <div>
-          <div className="text-[10px] font-semibold uppercase tracking-wider text-slate-400">
-            case ID
-          </div>
-          <div className="font-mono text-sm text-slate-700">
-            {caseId.slice(0, 8)}…
-          </div>
-        </div>
+    <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-zinc-800 bg-zinc-900/40 px-4 py-3 backdrop-blur-sm">
+      <div className="flex flex-wrap items-center gap-6">
+        <HeaderField label="case ID" value={`${caseId.slice(0, 8)}…`} mono />
         {createdTime && (
-          <div>
-            <div className="text-[10px] font-semibold uppercase tracking-wider text-slate-400">
-              submitted
-            </div>
-            <div className="text-sm text-slate-700">
-              {new Date(createdTime).toLocaleTimeString()}
-            </div>
-          </div>
+          <HeaderField
+            label="submitted"
+            value={new Date(createdTime).toLocaleTimeString()}
+          />
         )}
-        <div>
-          <div className="text-[10px] font-semibold uppercase tracking-wider text-slate-400">
-            elapsed
-          </div>
-          <div className="font-mono tabular-nums text-sm text-slate-700">
-            {formatElapsed(elapsedMs)}
-          </div>
-        </div>
+        <HeaderField label="elapsed" value={formatElapsed(elapsedMs)} mono />
       </div>
       <RuntimeBadge status={runtimeStatus} />
+    </div>
+  );
+}
+
+function HeaderField({
+  label,
+  value,
+  mono,
+}: {
+  label: string;
+  value: string;
+  mono?: boolean;
+}) {
+  return (
+    <div>
+      <div className="text-[10px] font-semibold uppercase tracking-wider text-zinc-500">
+        {label}
+      </div>
+      <div
+        className={`text-sm text-zinc-200 ${mono ? 'font-mono tabular-nums' : ''}`}
+      >
+        {value}
+      </div>
     </div>
   );
 }
@@ -214,9 +219,11 @@ function RuntimeBadge({ status }: { status: string }) {
   const pulsing = status === 'Running' || status === 'Pending';
   return (
     <div
-      className={`flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold ${tone}`}
+      className={`flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-semibold ${tone}`}
     >
-      {pulsing && <span className="inline-block h-2 w-2 animate-pulse rounded-full bg-current" />}
+      {pulsing && (
+        <span className="inline-block h-2 w-2 animate-pulse rounded-full bg-current" />
+      )}
       <span>{status}</span>
     </div>
   );
@@ -225,16 +232,16 @@ function RuntimeBadge({ status }: { status: string }) {
 function runtimeBadgeTone(s: string): string {
   switch (s) {
     case 'Completed':
-      return 'bg-emerald-100 text-emerald-800';
+      return 'border-emerald-500/30 bg-emerald-500/10 text-emerald-300';
     case 'Failed':
     case 'Terminated':
-      return 'bg-red-100 text-red-800';
+      return 'border-red-500/30 bg-red-500/10 text-red-300';
     case 'Running':
-      return 'bg-blue-100 text-blue-800';
+      return 'border-cyan-500/30 bg-cyan-500/10 text-cyan-300';
     case 'Pending':
-      return 'bg-slate-100 text-slate-700';
+      return 'border-zinc-700 bg-zinc-800/60 text-zinc-300';
     default:
-      return 'bg-slate-100 text-slate-700';
+      return 'border-zinc-700 bg-zinc-800/60 text-zinc-300';
   }
 }
 

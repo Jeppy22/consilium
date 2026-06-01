@@ -22,18 +22,6 @@ param appInsightsConnectionString string
 @description('Key Vault URI, e.g. https://kv.../')
 param keyVaultUri string
 
-@description('Cosmos DB document endpoint.')
-param cosmosEndpoint string
-
-@description('Cosmos database name.')
-param cosmosDatabaseName string
-
-@description('Cosmos cases container name.')
-param cosmosCasesContainerName string
-
-@description('Cosmos traces container name.')
-param cosmosTracesContainerName string
-
 @description('Common resource tags.')
 param tags object
 
@@ -109,20 +97,8 @@ var consiliumSettings = [
     value: '@Microsoft.KeyVault(SecretUri=${keyVaultUri}secrets/CONSILIUM-API-KEY)'
   }
   {
-    name: 'COSMOS_ENDPOINT'
-    value: cosmosEndpoint
-  }
-  {
-    name: 'COSMOS_DATABASE'
-    value: cosmosDatabaseName
-  }
-  {
-    name: 'COSMOS_CASES_CONTAINER'
-    value: cosmosCasesContainerName
-  }
-  {
-    name: 'COSMOS_TRACES_CONTAINER'
-    value: cosmosTracesContainerName
+    name: 'STORAGE_ACCOUNT_NAME'
+    value: storageAccountName
   }
 ]
 

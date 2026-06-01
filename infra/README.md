@@ -13,13 +13,14 @@ subscription
     ├── consilium-dev-eus-appi             Application Insights (workspace-based)
     ├── kv-consilium-dev-{token6}          Key Vault (RBAC mode, purge protection ON)
     ├── stconsilium{token6}                Storage account (MI-only access)
-    ├── consilium-dev-eus-cosmos-{token6}  Cosmos DB NoSQL account (Serverless, AAD-only)
-    │     └── database "consilium"
-    │           ├── container "cases"   (PK /caseId)
-    │           └── container "traces"  (PK /caseId, TTL 7 days)
+    │     └── tables                        Consilium data plane (created at runtime)
+    │           ├── cases   (PK = caseId, RK = "case")
+    │           └── traces  (PK = caseId, RK = "{step}-{agent}-{status}")
     ├── consilium-dev-eus-plan             Flex Consumption plan (FC1)
     └── consilium-dev-eus-func-{token6}    Function App (System MI, Node 20)
 ```
+
+> **Data store.** Cases and agent traces live in Azure Table Storage on the same storage account that hosts Durable Functions state and the Flex deployment container. Tables are created on first use by the Function App via the Tables SDK; no Bicep table-level resources are required. Cosmos DB was the prior choice but does not provision on the "Azure for Students" subscription due to a zonal capacity restriction. `modules/cosmos.bicep` remains on disk for reference but is not wired in.
 
 `{token6}` is the first 6 chars of `uniqueString(subscription().id, environmentName, location)`.
 
@@ -66,7 +67,7 @@ az deployment sub create `
   --parameters infra/main.parameters.json
 ```
 
-First deploy takes ~5–8 minutes (Cosmos and Storage are the slowest).
+First deploy takes ~3–5 minutes (Storage and the Flex plan are the slowest).
 
 ### Read outputs
 
@@ -131,10 +132,10 @@ $hostname = $outputs.functionAppHostname.value
 ## Notes and gotchas
 
 - **Purge protection is permanent.** Once `enablePurgeProtection: true` is deployed, it cannot be turned off. Deleting the KV requires waiting out the 90-day soft-delete window or an admin purge with the right perms.
-- **Cosmos AAD-only.** `disableLocalAuth: true` means connection strings won't work — only the FA's managed identity can read/write. If you need to query from the Azure portal Data Explorer, assign your user the Cosmos DB Built-in Data Contributor role on the account.
-- **Storage MI-only.** `allowSharedKeyAccess: false`. The Function App's MI gets Blob Data Owner + Queue Data Contributor + Table Data Contributor on the storage account (the three Durable Functions needs for state + the Flex deployment container).
+- **Storage MI-only.** `allowSharedKeyAccess: false`. The Function App's MI always gets Table Data Contributor (Consilium data plane). When `useManagedIdentityStorage=true` it also gets Blob Data Owner + Queue Data Contributor on the storage account (Durable Functions state + Flex deployment container).
+- **Tables created at runtime.** The `cases` and `traces` tables are created on first use by the Function App via the Tables SDK (create-if-not-exists). No Bicep table resources required.
+- **Table Storage size limits.** Each property is capped at 64 KB and an entity at 1 MB. Current agent outputs (largest ~27 KB serialized) sit comfortably under this. If a future agent's payload grows, split across chunked properties or move to Blob with a pointer.
 - **KV reference resolution timing.** App settings showing `Not Resolved` immediately after first deploy are expected — they resolve once the secrets exist and the Function App is restarted.
-- **Traces TTL = 7 days (604800 s).** Override with `--parameters tracesTtlSeconds=<seconds>` or by editing `main.parameters.json`. Set to `0` to disable (treated as `defaultTtl: -1` = TTL on but no automatic expiry).
 - **Naming deviations are deliberate.** Storage cannot contain hyphens; Key Vault has a 24-char hard limit. See the header comment in `main.bicep` for the rules.
 
 ## Teardown
@@ -143,7 +144,7 @@ $hostname = $outputs.functionAppHostname.value
 az group delete --name rg-consilium-dev-eus --yes --no-wait
 ```
 
-The Key Vault and Cosmos account will be soft-deleted (90 day retention). To fully purge the KV before the retention window:
+The Key Vault will be soft-deleted (90 day retention). To fully purge the KV before the retention window:
 
 ```powershell
 az keyvault purge --name $kvName --location eastus

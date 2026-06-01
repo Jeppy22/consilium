@@ -1,10 +1,10 @@
 'use client';
 
 import {
-  FileText,
+  ClipboardList,
   ListOrdered,
-  BookOpen,
-  AlertOctagon,
+  Search,
+  Swords,
   Sparkles,
   type LucideIcon,
 } from 'lucide-react';
@@ -18,10 +18,10 @@ type AgentSpec = {
 };
 
 const PIPELINE: AgentSpec[] = [
-  { key: 'historian', label: 'Historian', step: 1, Icon: FileText },
+  { key: 'historian', label: 'Historian', step: 1, Icon: ClipboardList },
   { key: 'differential', label: 'Differential', step: 2, Icon: ListOrdered },
-  { key: 'evidence', label: 'Evidence', step: 3, Icon: BookOpen },
-  { key: 'devilsAdvocate', label: "Devil's Advocate", step: 4, Icon: AlertOctagon },
+  { key: 'evidence', label: 'Evidence', step: 3, Icon: Search },
+  { key: 'devilsAdvocate', label: "Devil's Advocate", step: 4, Icon: Swords },
   { key: 'synthesizer', label: 'Synthesizer', step: 5, Icon: Sparkles },
 ];
 
@@ -37,7 +37,7 @@ export function AgentPipeline({
         const nextStatus = i < PIPELINE.length - 1
           ? statuses[PIPELINE[i + 1].key] ?? 'pending'
           : null;
-        const connectorTone = connectorClass(status, nextStatus);
+        const { connectorClass, animated } = connectorTone(status, nextStatus);
 
         return (
           <div
@@ -55,7 +55,9 @@ export function AgentPipeline({
             {nextStatus !== null && (
               <div
                 aria-hidden
-                className={`mx-auto h-6 w-px md:mx-2 md:h-px md:w-10 md:flex-shrink-0 ${connectorTone}`}
+                className={`mx-auto h-6 w-px md:mx-2 md:h-px md:w-10 md:flex-shrink-0 ${connectorClass} ${
+                  animated ? 'md:animate-flow animate-flow-vertical md:bg-none' : ''
+                }`}
               />
             )}
           </div>
@@ -65,15 +67,19 @@ export function AgentPipeline({
   );
 }
 
-function connectorClass(
+function connectorTone(
   prev: AgentStatus,
   next: AgentStatus | null
-): string {
-  if (next === null) return '';
-  if (prev === 'completed' && next === 'completed') return 'bg-emerald-300';
-  if (prev === 'completed' && (next === 'running' || next === 'pending')) {
-    return 'animate-flow';
+): { connectorClass: string; animated: boolean } {
+  if (next === null) return { connectorClass: '', animated: false };
+  if (prev === 'completed' && next === 'completed') {
+    return { connectorClass: 'bg-emerald-500/40', animated: false };
   }
-  if (prev === 'failed' || next === 'failed') return 'bg-red-300';
-  return 'bg-slate-200';
+  if (prev === 'completed' && (next === 'running' || next === 'pending')) {
+    return { connectorClass: '', animated: true };
+  }
+  if (prev === 'failed' || next === 'failed') {
+    return { connectorClass: 'bg-red-500/40', animated: false };
+  }
+  return { connectorClass: 'bg-zinc-800', animated: false };
 }

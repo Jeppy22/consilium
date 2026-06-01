@@ -10,18 +10,18 @@ function parse(output: unknown): DevilsAdvocateOutput | null {
 }
 
 const ASSESSMENT_TONE: Record<DevilsAdvocateOutput['overall_assessment'], string> = {
-  solid: 'bg-emerald-100 text-emerald-800 border-emerald-200',
-  needs_revision: 'bg-amber-100 text-amber-800 border-amber-200',
-  concerning: 'bg-red-100 text-red-800 border-red-200',
+  solid: 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30',
+  needs_revision: 'bg-amber-500/15 text-amber-300 border-amber-500/30',
+  concerning: 'bg-red-500/15 text-red-300 border-red-500/30',
 };
 
 const SEVERITY_TONE: Record<
   DevilsAdvocateOutput['critiques'][number]['severity'],
   string
 > = {
-  high: 'bg-red-100 text-red-800',
-  medium: 'bg-amber-100 text-amber-800',
-  low: 'bg-slate-100 text-slate-700',
+  high: 'bg-red-500/15 text-red-300',
+  medium: 'bg-amber-500/15 text-amber-300',
+  low: 'bg-zinc-800 text-zinc-400',
 };
 
 export function DevilsAdvocateSummary({ output }: { output: unknown }) {
@@ -29,16 +29,16 @@ export function DevilsAdvocateSummary({ output }: { output: unknown }) {
   if (!parsed) return null;
   const highCount = parsed.critiques.filter((c) => c.severity === 'high').length;
   return (
-    <p className="text-sm text-slate-600">
+    <p className="text-sm text-zinc-400">
       Assessment:{' '}
-      <span className="font-medium text-slate-800">
+      <span className="font-medium text-zinc-100">
         {parsed.overall_assessment.replace('_', ' ')}
       </span>
       . {parsed.critiques.length} critique{parsed.critiques.length === 1 ? '' : 's'}
       {highCount > 0 && (
         <>
           {' '}
-          <span className="text-red-600">• {highCount} high severity</span>
+          <span className="text-red-400">• {highCount} high severity</span>
         </>
       )}
       .
@@ -54,7 +54,7 @@ export function DevilsAdvocateDetail({ output }: { output: unknown }) {
     <div className="space-y-5 text-sm">
       <div>
         <div className="mb-2 flex flex-wrap items-center gap-2">
-          <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+          <span className="text-xs font-semibold uppercase tracking-wider text-zinc-500">
             Overall assessment
           </span>
           <span
@@ -63,24 +63,24 @@ export function DevilsAdvocateDetail({ output }: { output: unknown }) {
             {parsed.overall_assessment.replace('_', ' ')}
           </span>
         </div>
-        <p className="text-slate-700">{parsed.assessment_reasoning}</p>
+        <p className="text-zinc-300">{parsed.assessment_reasoning}</p>
         {parsed.agreed_top_diagnosis && (
-          <p className="mt-1 text-xs text-slate-500">
+          <p className="mt-1 text-xs text-zinc-500">
             Agreed top diagnosis:{' '}
-            <span className="font-medium text-slate-700">{parsed.agreed_top_diagnosis}</span>
+            <span className="font-medium text-zinc-300">{parsed.agreed_top_diagnosis}</span>
           </p>
         )}
       </div>
 
       <div>
-        <h4 className="mb-2 text-xs font-semibold uppercase tracking-wider text-slate-500">
+        <h4 className="mb-2 text-xs font-semibold uppercase tracking-wider text-zinc-500">
           Critiques ({parsed.critiques.length})
         </h4>
         <ul className="space-y-3">
           {parsed.critiques.map((c, i) => (
             <li
               key={i}
-              className="rounded-md border border-slate-200 bg-white p-3"
+              className="rounded-lg border border-zinc-800 bg-zinc-900/60 p-3 backdrop-blur-sm"
             >
               <div className="mb-2 flex flex-wrap items-center gap-2">
                 <span
@@ -88,24 +88,25 @@ export function DevilsAdvocateDetail({ output }: { output: unknown }) {
                 >
                   {c.severity}
                 </span>
-                <span className="font-mono text-xs text-slate-500">{c.type}</span>
-                <span className="text-xs text-slate-400">→</span>
-                <span className="text-xs font-medium text-slate-700">{c.target_diagnosis}</span>
+                <span className="font-mono text-xs text-zinc-500">{c.type}</span>
+                <span className="text-xs text-zinc-600">→</span>
+                <span className="text-xs font-medium text-zinc-200">{c.target_diagnosis}</span>
               </div>
-              <p className="text-slate-700">{c.argument}</p>
+              <p className="text-zinc-300">{c.argument}</p>
               {c.alternative_diagnosis && (
-                <p className="mt-1 text-xs text-slate-600">
-                  <span className="font-semibold">Alternative:</span> {c.alternative_diagnosis}
+                <p className="mt-1 text-xs text-zinc-400">
+                  <span className="font-semibold text-zinc-200">Alternative:</span>{' '}
+                  {c.alternative_diagnosis}
                   {c.alternative_icd10_code && (
-                    <span className="ml-1 font-mono text-slate-500">
+                    <span className="ml-1 font-mono text-zinc-500">
                       ({c.alternative_icd10_code})
                     </span>
                   )}
                 </p>
               )}
               {c.evidence_from_bundle.length > 0 && (
-                <p className="mt-1 text-xs text-slate-600">
-                  <span className="font-semibold">Evidence:</span>{' '}
+                <p className="mt-1 text-xs text-zinc-400">
+                  <span className="font-semibold text-zinc-200">Evidence:</span>{' '}
                   {c.evidence_from_bundle.join('; ')}
                 </p>
               )}

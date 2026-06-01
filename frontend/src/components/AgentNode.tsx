@@ -19,18 +19,18 @@ export function AgentNode({
 
   return (
     <div
-      className={`relative flex w-full min-w-[140px] max-w-[200px] flex-col items-center gap-2 rounded-lg border px-3 py-3 text-center transition-all duration-300 ${container} ${
-        status === 'running' ? 'animate-pulse' : ''
+      className={`relative flex w-full min-w-[140px] max-w-[200px] flex-col items-center gap-2 rounded-xl border px-3 py-3 text-center backdrop-blur-sm transition-all duration-300 ${container} ${
+        status === 'running' ? 'animate-cyan-glow' : ''
       }`}
     >
       <div className={`flex h-9 w-9 items-center justify-center rounded-full ${iconTone}`}>
         <Icon className="h-5 w-5" />
       </div>
       <div className="space-y-0.5">
-        <div className="font-mono text-[10px] uppercase tracking-wider text-slate-400">
+        <div className="font-mono text-[10px] uppercase tracking-wider text-zinc-500">
           step {step}
         </div>
-        <div className="text-sm font-medium text-slate-800">{label}</div>
+        <div className="text-sm font-medium text-zinc-100">{label}</div>
       </div>
       <div
         className={`flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-medium ${badge}`}
@@ -53,31 +53,31 @@ const STYLES: Record<
   }
 > = {
   pending: {
-    container: 'border-slate-200 bg-slate-50/60 opacity-60',
-    badge: 'bg-slate-100 text-slate-500',
+    container: 'border-zinc-800 bg-zinc-900/40 opacity-60',
+    badge: 'bg-zinc-800/80 text-zinc-500',
     badgeIcon: <Circle className="h-3 w-3" />,
     badgeLabel: 'pending',
-    iconTone: 'bg-slate-100 text-slate-400',
+    iconTone: 'bg-zinc-800 text-zinc-500',
   },
   running: {
-    container: 'border-blue-300 bg-white shadow-sm ring-2 ring-blue-100',
-    badge: 'bg-blue-100 text-blue-700',
+    container: 'border-cyan-500/40 bg-zinc-900/80 ring-1 ring-cyan-500/30',
+    badge: 'bg-cyan-500/15 text-cyan-300',
     badgeIcon: <Loader2 className="h-3 w-3 animate-spin" />,
     badgeLabel: 'running',
-    iconTone: 'bg-blue-100 text-blue-600',
+    iconTone: 'bg-cyan-500/15 text-cyan-300 ring-1 ring-cyan-500/40',
   },
   completed: {
-    container: 'border-emerald-200 bg-white',
-    badge: 'bg-emerald-100 text-emerald-700',
+    container: 'border-emerald-500/30 bg-zinc-900/60',
+    badge: 'bg-emerald-500/15 text-emerald-300',
     badgeIcon: <Check className="h-3 w-3" />,
     badgeLabel: 'done',
-    iconTone: 'bg-emerald-100 text-emerald-600',
+    iconTone: 'bg-emerald-500/15 text-emerald-300 ring-1 ring-emerald-500/30',
   },
   failed: {
-    container: 'border-red-300 bg-white ring-2 ring-red-100',
-    badge: 'bg-red-100 text-red-700',
+    container: 'border-red-500/40 bg-zinc-900/60 ring-1 ring-red-500/30',
+    badge: 'bg-red-500/15 text-red-300',
     badgeIcon: <X className="h-3 w-3" />,
     badgeLabel: 'failed',
-    iconTone: 'bg-red-100 text-red-600',
+    iconTone: 'bg-red-500/15 text-red-300 ring-1 ring-red-500/40',
   },
 };

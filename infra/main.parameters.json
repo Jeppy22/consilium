@@ -8,12 +8,6 @@
     "location": {
       "value": "eastus"
     },
-    "cosmosThroughputMode": {
-      "value": "Serverless"
-    },
-    "tracesTtlSeconds": {
-      "value": 604800
-    },
     "useManagedIdentityStorage": {
       "value": true
     }

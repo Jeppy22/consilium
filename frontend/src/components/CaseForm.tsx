@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { ArrowLeft, Sparkles, ClipboardList } from 'lucide-react';
 import { ClinicalInputSchema, type ClinicalInput } from '@/lib/schemas';
 
 const SAMPLE: ClinicalInput = {
@@ -18,34 +19,50 @@ const SAMPLE: ClinicalInput = {
 
 type Props = {
   onSubmit: (input: ClinicalInput) => void;
+  onBack: () => void;
   isSubmitting: boolean;
+  submitError: string | null;
 };
 
-export function CaseForm({ onSubmit, isSubmitting }: Props) {
-  const [age, setAge] = useState(String(SAMPLE.age));
-  const [sex, setSex] = useState<ClinicalInput['sex']>(SAMPLE.sex);
-  const [chiefComplaint, setChiefComplaint] = useState(SAMPLE.chief_complaint);
-  const [duration, setDuration] = useState(SAMPLE.duration);
-  const [medications, setMedications] = useState(SAMPLE.current_medications.join(', '));
-  const [allergies, setAllergies] = useState(SAMPLE.allergies.join(', '));
-  const [pmh, setPmh] = useState(SAMPLE.past_medical_history.join(', '));
-  const [bp, setBp] = useState(SAMPLE.vital_signs.bp ?? '');
-  const [hr, setHr] = useState(SAMPLE.vital_signs.hr?.toString() ?? '');
-  const [temp, setTemp] = useState(SAMPLE.vital_signs.temp?.toString() ?? '');
-  const [rr, setRr] = useState(SAMPLE.vital_signs.rr?.toString() ?? '');
-  const [spo2, setSpo2] = useState(SAMPLE.vital_signs.spo2?.toString() ?? '');
-  const [freeText, setFreeText] = useState(SAMPLE.free_text);
+export function CaseForm({ onSubmit, onBack, isSubmitting, submitError }: Props) {
+  const [age, setAge] = useState('');
+  const [sex, setSex] = useState<ClinicalInput['sex']>('male');
+  const [chiefComplaint, setChiefComplaint] = useState('');
+  const [duration, setDuration] = useState('');
+  const [medications, setMedications] = useState('');
+  const [allergies, setAllergies] = useState('');
+  const [pmh, setPmh] = useState('');
+  const [bp, setBp] = useState('');
+  const [hr, setHr] = useState('');
+  const [temp, setTemp] = useState('');
+  const [rr, setRr] = useState('');
+  const [spo2, setSpo2] = useState('');
+  const [freeText, setFreeText] = useState('');
   const [validationError, setValidationError] = useState<string | null>(null);
+
+  function loadSample() {
+    setAge(String(SAMPLE.age));
+    setSex(SAMPLE.sex);
+    setChiefComplaint(SAMPLE.chief_complaint);
+    setDuration(SAMPLE.duration);
+    setMedications(SAMPLE.current_medications.join(', '));
+    setAllergies(SAMPLE.allergies.join(', '));
+    setPmh(SAMPLE.past_medical_history.join(', '));
+    setBp(SAMPLE.vital_signs.bp ?? '');
+    setHr(SAMPLE.vital_signs.hr?.toString() ?? '');
+    setTemp(SAMPLE.vital_signs.temp?.toString() ?? '');
+    setRr(SAMPLE.vital_signs.rr?.toString() ?? '');
+    setSpo2(SAMPLE.vital_signs.spo2?.toString() ?? '');
+    setFreeText(SAMPLE.free_text);
+    setValidationError(null);
+  }
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setValidationError(null);
 
     const splitCsv = (s: string) =>
-      s
-        .split(',')
-        .map((x) => x.trim())
-        .filter(Boolean);
+      s.split(',').map((x) => x.trim()).filter(Boolean);
 
     const toNumber = (s: string): number | undefined =>
       s.trim() === '' ? undefined : Number(s);
@@ -79,164 +96,208 @@ export function CaseForm({ onSubmit, isSubmitting }: Props) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Field label="Age">
-          <input
-            type="number"
-            value={age}
-            onChange={(e) => setAge(e.target.value)}
-            min={0}
-            max={150}
-            required
-            className={inputClass}
-          />
-        </Field>
-        <Field label="Sex">
-          <select
-            value={sex}
-            onChange={(e) => setSex(e.target.value as ClinicalInput['sex'])}
-            className={inputClass}
-          >
-            <option value="male">male</option>
-            <option value="female">female</option>
-            <option value="other">other</option>
-            <option value="unknown">unknown</option>
-          </select>
-        </Field>
-        <Field label="Duration">
-          <input
-            type="text"
-            value={duration}
-            onChange={(e) => setDuration(e.target.value)}
-            required
-            className={inputClass}
-            placeholder="e.g. 3 hours, 2 days"
-          />
-        </Field>
+    <main className="mx-auto max-w-4xl px-6 py-10">
+      <div className="mb-6 flex items-center justify-between">
+        <button
+          type="button"
+          onClick={onBack}
+          className="inline-flex items-center gap-1.5 text-sm text-zinc-400 transition-colors hover:text-zinc-200"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          Back
+        </button>
+        <button
+          type="button"
+          onClick={loadSample}
+          className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-800 bg-zinc-900/60 px-3 py-1.5 text-xs font-medium text-zinc-300 backdrop-blur-sm transition-all duration-200 hover:border-cyan-500/40 hover:text-cyan-300"
+        >
+          <ClipboardList className="h-3.5 w-3.5" />
+          Load sample case
+        </button>
       </div>
 
-      <Field label="Chief complaint">
-        <input
-          type="text"
-          value={chiefComplaint}
-          onChange={(e) => setChiefComplaint(e.target.value)}
-          required
-          className={inputClass}
-        />
-      </Field>
+      <header className="mb-8">
+        <h1 className="text-2xl font-semibold tracking-tight text-zinc-50">New case</h1>
+        <p className="mt-1 text-sm text-zinc-400">
+          Enter clinical data or load the sample case. The five agents will reason
+          through it in sequence.
+        </p>
+      </header>
 
-      <fieldset className="border border-slate-200 rounded-md p-4">
-        <legend className="text-sm font-medium px-1">Vital signs</legend>
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mt-2">
-          <Field label="BP">
+      <form onSubmit={handleSubmit} className="space-y-5">
+        <Section title="Demographics">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+            <Field label="Age">
+              <input
+                type="number"
+                value={age}
+                onChange={(e) => setAge(e.target.value)}
+                min={0}
+                max={150}
+                required
+                className={inputClass}
+              />
+            </Field>
+            <Field label="Sex">
+              <select
+                value={sex}
+                onChange={(e) => setSex(e.target.value as ClinicalInput['sex'])}
+                className={inputClass}
+              >
+                <option value="male">male</option>
+                <option value="female">female</option>
+                <option value="other">other</option>
+                <option value="unknown">unknown</option>
+              </select>
+            </Field>
+            <Field label="Duration">
+              <input
+                type="text"
+                value={duration}
+                onChange={(e) => setDuration(e.target.value)}
+                required
+                className={inputClass}
+                placeholder="e.g. 3 hours, 2 days"
+              />
+            </Field>
+          </div>
+          <Field label="Chief complaint">
             <input
               type="text"
-              value={bp}
-              onChange={(e) => setBp(e.target.value)}
+              value={chiefComplaint}
+              onChange={(e) => setChiefComplaint(e.target.value)}
+              required
               className={inputClass}
-              placeholder="120/80"
+              placeholder="e.g. Chest pain"
             />
           </Field>
-          <Field label="HR (bpm)">
+        </Section>
+
+        <Section title="Vital signs">
+          <div className="grid grid-cols-2 gap-3 md:grid-cols-5">
+            <Field label="BP">
+              <input
+                type="text"
+                value={bp}
+                onChange={(e) => setBp(e.target.value)}
+                className={inputClass}
+                placeholder="120/80"
+              />
+            </Field>
+            <Field label="HR (bpm)">
+              <input
+                type="number"
+                value={hr}
+                onChange={(e) => setHr(e.target.value)}
+                className={inputClass}
+              />
+            </Field>
+            <Field label="Temp (°C)">
+              <input
+                type="number"
+                step="0.1"
+                value={temp}
+                onChange={(e) => setTemp(e.target.value)}
+                className={inputClass}
+              />
+            </Field>
+            <Field label="RR (/min)">
+              <input
+                type="number"
+                value={rr}
+                onChange={(e) => setRr(e.target.value)}
+                className={inputClass}
+              />
+            </Field>
+            <Field label="SpO₂ (%)">
+              <input
+                type="number"
+                value={spo2}
+                onChange={(e) => setSpo2(e.target.value)}
+                className={inputClass}
+              />
+            </Field>
+          </div>
+        </Section>
+
+        <Section title="History">
+          <Field label="Current medications (comma-separated)">
             <input
-              type="number"
-              value={hr}
-              onChange={(e) => setHr(e.target.value)}
+              type="text"
+              value={medications}
+              onChange={(e) => setMedications(e.target.value)}
               className={inputClass}
+              placeholder="e.g. Lisinopril 10mg daily, Metformin 500mg BID"
             />
           </Field>
-          <Field label="Temp (°C)">
+          <Field label="Allergies (comma-separated)">
             <input
-              type="number"
-              step="0.1"
-              value={temp}
-              onChange={(e) => setTemp(e.target.value)}
+              type="text"
+              value={allergies}
+              onChange={(e) => setAllergies(e.target.value)}
               className={inputClass}
+              placeholder="e.g. Penicillin"
             />
           </Field>
-          <Field label="RR (/min)">
+          <Field label="Past medical history (comma-separated)">
             <input
-              type="number"
-              value={rr}
-              onChange={(e) => setRr(e.target.value)}
+              type="text"
+              value={pmh}
+              onChange={(e) => setPmh(e.target.value)}
               className={inputClass}
+              placeholder="e.g. Hypertension, Type 2 diabetes"
             />
           </Field>
-          <Field label="SpO₂ (%)">
-            <input
-              type="number"
-              value={spo2}
-              onChange={(e) => setSpo2(e.target.value)}
+          <Field label="Narrative / exam findings">
+            <textarea
+              value={freeText}
+              onChange={(e) => setFreeText(e.target.value)}
+              rows={4}
               className={inputClass}
+              placeholder="Free text — symptoms, exam, context."
             />
           </Field>
+        </Section>
+
+        {(validationError || submitError) && (
+          <div className="rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-300">
+            {submitError ?? `Validation: ${validationError}`}
+          </div>
+        )}
+
+        <div className="flex items-center justify-end gap-3 pt-2">
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className="inline-flex items-center gap-2 rounded-lg bg-cyan-500 px-5 py-2.5 text-sm font-semibold text-zinc-950 shadow-[0_0_30px_-5px_rgba(34,211,238,0.5)] transition-all duration-200 hover:bg-cyan-400 hover:shadow-[0_0_40px_-5px_rgba(34,211,238,0.7)] disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            <Sparkles className="h-4 w-4" />
+            {isSubmitting ? 'Submitting…' : 'Run analysis'}
+          </button>
         </div>
-      </fieldset>
+      </form>
+    </main>
+  );
+}
 
-      <Field label="Current medications (comma-separated)">
-        <input
-          type="text"
-          value={medications}
-          onChange={(e) => setMedications(e.target.value)}
-          className={inputClass}
-        />
-      </Field>
-
-      <Field label="Allergies (comma-separated)">
-        <input
-          type="text"
-          value={allergies}
-          onChange={(e) => setAllergies(e.target.value)}
-          className={inputClass}
-        />
-      </Field>
-
-      <Field label="Past medical history (comma-separated)">
-        <input
-          type="text"
-          value={pmh}
-          onChange={(e) => setPmh(e.target.value)}
-          className={inputClass}
-        />
-      </Field>
-
-      <Field label="Narrative / exam findings">
-        <textarea
-          value={freeText}
-          onChange={(e) => setFreeText(e.target.value)}
-          rows={4}
-          className={inputClass}
-        />
-      </Field>
-
-      {validationError && (
-        <p className="text-sm text-red-600">Validation: {validationError}</p>
-      )}
-
-      <div className="flex items-center gap-3">
-        <button
-          type="submit"
-          disabled={isSubmitting}
-          className="rounded-md bg-slate-900 text-white px-4 py-2 text-sm font-medium hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          {isSubmitting ? 'Submitting…' : 'Submit case'}
-        </button>
-        <span className="text-xs text-slate-500">
-          Form pre-filled with a sample case for testing.
-        </span>
-      </div>
-    </form>
+function Section({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <section className="rounded-xl border border-zinc-800 bg-zinc-900/40 p-5 backdrop-blur-sm">
+      <h2 className="mb-4 text-xs font-semibold uppercase tracking-wider text-zinc-500">
+        {title}
+      </h2>
+      <div className="space-y-4">{children}</div>
+    </section>
   );
 }
 
 const inputClass =
-  'block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-slate-500 focus:ring-1 focus:ring-slate-500 outline-none';
+  'block w-full rounded-md border border-zinc-700 bg-zinc-950/60 px-3 py-2 text-sm text-zinc-100 placeholder:text-zinc-500 transition-colors focus:border-cyan-500 focus:outline-none focus:ring-1 focus:ring-cyan-500/40';
 
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <label className="block">
-      <span className="block text-sm font-medium text-slate-700 mb-1">{label}</span>
+      <span className="mb-1 block text-xs font-medium text-zinc-400">{label}</span>
       {children}
     </label>
   );

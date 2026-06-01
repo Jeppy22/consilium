@@ -34,10 +34,10 @@ export type TraceEntry = {
 };
 
 const BADGE_TONE: Record<AgentStatus, string> = {
-  pending: 'bg-slate-100 text-slate-600',
-  running: 'bg-blue-100 text-blue-800',
-  completed: 'bg-emerald-100 text-emerald-800',
-  failed: 'bg-red-100 text-red-800',
+  pending: 'bg-zinc-800 text-zinc-500',
+  running: 'bg-cyan-500/15 text-cyan-300',
+  completed: 'bg-emerald-500/15 text-emerald-300',
+  failed: 'bg-red-500/15 text-red-300',
 };
 
 export function AgentCard({
@@ -63,12 +63,14 @@ export function AgentCard({
 
   return (
     <div
-      className={`rounded-lg border bg-white transition-all duration-300 ${
+      className={`rounded-xl border bg-zinc-900/40 backdrop-blur-sm transition-all duration-300 ${
         status === 'running'
-          ? 'border-blue-200 shadow-sm ring-1 ring-blue-100'
+          ? 'border-cyan-500/30 ring-1 ring-cyan-500/20'
           : status === 'failed'
-            ? 'border-red-200'
-            : 'border-slate-200'
+            ? 'border-red-500/30'
+            : status === 'completed'
+              ? 'border-zinc-800'
+              : 'border-zinc-800/60'
       }`}
     >
       <button
@@ -78,14 +80,14 @@ export function AgentCard({
       >
         <div className="flex min-w-0 items-center gap-2">
           {expanded ? (
-            <ChevronDown className="h-4 w-4 flex-shrink-0 text-slate-400" />
+            <ChevronDown className="h-4 w-4 flex-shrink-0 text-zinc-500" />
           ) : (
-            <ChevronRight className="h-4 w-4 flex-shrink-0 text-slate-400" />
+            <ChevronRight className="h-4 w-4 flex-shrink-0 text-zinc-500" />
           )}
-          <span className="font-mono text-[10px] uppercase tracking-wider text-slate-400">
+          <span className="font-mono text-[10px] uppercase tracking-wider text-zinc-500">
             step {latest?.step ?? '–'}
           </span>
-          <span className="font-medium text-slate-800">{label}</span>
+          <span className="font-medium text-zinc-100">{label}</span>
         </div>
         <span
           className={`flex-shrink-0 rounded-full px-2 py-0.5 text-xs font-medium ${BADGE_TONE[status]}`}
@@ -101,10 +103,10 @@ export function AgentCard({
       )}
 
       {expanded && (
-        <div className="border-t border-slate-100 px-4 py-4">
+        <div className="border-t border-zinc-800/80 px-4 py-4">
           {latest ? (
             <div className="space-y-3">
-              <div className="flex flex-wrap items-center gap-3 text-xs text-slate-500">
+              <div className="flex flex-wrap items-center gap-3 font-mono text-xs text-zinc-500">
                 <span>
                   started {new Date(latest.startedAt).toLocaleTimeString()}
                 </span>
@@ -121,13 +123,13 @@ export function AgentCard({
               </div>
 
               {latest.error && (
-                <pre className="whitespace-pre-wrap rounded-md bg-red-50 p-3 text-xs text-red-700">
+                <pre className="whitespace-pre-wrap rounded-lg border border-red-500/30 bg-red-500/10 p-3 text-xs text-red-200">
                   {latest.error}
                 </pre>
               )}
 
               {latest.status === 'started' && !latest.error && (
-                <p className="text-sm text-slate-500">Running…</p>
+                <p className="text-sm text-zinc-400">Running…</p>
               )}
 
               {latest.output !== undefined && (
@@ -137,12 +139,12 @@ export function AgentCard({
                     <button
                       type="button"
                       onClick={() => setShowRaw((v) => !v)}
-                      className="text-xs text-slate-500 underline-offset-2 hover:text-slate-700 hover:underline"
+                      className="text-xs text-zinc-500 underline-offset-2 hover:text-zinc-300 hover:underline"
                     >
                       {showRaw ? 'Hide raw JSON' : 'View raw JSON'}
                     </button>
                     {showRaw && (
-                      <pre className="mt-2 max-h-80 overflow-auto rounded-md bg-slate-50 p-3 text-[11px] text-slate-700">
+                      <pre className="mt-2 max-h-80 overflow-auto rounded-lg border border-zinc-800 bg-zinc-950/60 p-3 text-[11px] text-zinc-300">
                         {JSON.stringify(latest.output, null, 2)}
                       </pre>
                     )}
@@ -151,7 +153,7 @@ export function AgentCard({
               )}
             </div>
           ) : (
-            <p className="text-sm text-slate-500">Waiting for this agent to start…</p>
+            <p className="text-sm text-zinc-500">Waiting for this agent to start…</p>
           )}
         </div>
       )}
@@ -209,7 +211,7 @@ function AgentDetail({
   if (rendered) return rendered;
 
   return (
-    <div className="rounded-md border border-amber-200 bg-amber-50 p-3 text-xs text-amber-800">
+    <div className="rounded-lg border border-amber-500/30 bg-amber-500/10 p-3 text-xs text-amber-200">
       Output did not match the expected schema for this agent. Raw JSON below.
     </div>
   );

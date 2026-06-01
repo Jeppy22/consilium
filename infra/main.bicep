@@ -14,6 +14,12 @@
 // subscription's allowed-regions policy. To target eastus2, override the
 // `location` parameter AND set `regionTag` to 'eus2'.
 //
+// Data store: Azure Table Storage on the storage account we already
+// provision (tables "cases" and "traces" are created at runtime by the
+// Function App via the Tables SDK). Cosmos was the prior choice; it does
+// not provision on the "Azure for Students" subscription due to a zonal
+// capacity restriction. modules/cosmos.bicep remains on disk unreferenced.
+//
 // Search module exists at modules/search.bicep but is intentionally not
 // wired in (Phase 2). Uncomment when you start the Evidence agent.
 // =====================================================================
@@ -26,27 +32,17 @@ targetScope = 'subscription'
 param environmentName string = 'dev'
 
 @description('Azure region for the resource group and all resources.')
-param location string = 'eastus'
-
-@description('Cosmos DB throughput mode.')
-@allowed([
-  'Serverless'
-  'Provisioned'
-])
-param cosmosThroughputMode string = 'Serverless'
-
-@description('TTL applied to trace items in the traces container, in seconds.')
-@minValue(0)
-param tracesTtlSeconds int = 604800
+param location string = 'southcentralus'
 
 @description('Use managed identity (vs shared key) for Flex Consumption deployment storage.')
 param useManagedIdentityStorage bool = true
 
 var projectName = 'consilium'
-var regionTag = 'eus'
+var regionTag = 'scus'
 var baseName = '${projectName}-${environmentName}-${regionTag}'
 var resourceGroupName = 'rg-${baseName}'
-var resourceToken = substring(uniqueString(subscription().id, environmentName, location), 0, 6)
+var tokenSalt = 'v2'
+var resourceToken = substring(uniqueString(subscription().id, environmentName, location, tokenSalt), 0, 6)
 
 var commonTags = {
   project: projectName
@@ -95,19 +91,6 @@ module storage 'modules/storage.bicep' = {
   }
 }
 
-module cosmos 'modules/cosmos.bicep' = {
-  scope: rg
-  name: 'cosmos-deploy'
-  params: {
-    location: location
-    baseName: baseName
-    resourceToken: resourceToken
-    throughputMode: cosmosThroughputMode
-    tracesTtlSeconds: tracesTtlSeconds
-    tags: commonTags
-  }
-}
-
 module functionApp 'modules/functionApp.bicep' = {
   scope: rg
   name: 'functionApp-deploy'
@@ -120,10 +103,6 @@ module functionApp 'modules/functionApp.bicep' = {
     useManagedIdentityStorage: useManagedIdentityStorage
     appInsightsConnectionString: monitor.outputs.appInsightsConnectionString
     keyVaultUri: keyvault.outputs.keyVaultUri
-    cosmosEndpoint: cosmos.outputs.endpoint
-    cosmosDatabaseName: cosmos.outputs.databaseName
-    cosmosCasesContainerName: cosmos.outputs.casesContainerName
-    cosmosTracesContainerName: cosmos.outputs.tracesContainerName
     tags: commonTags
   }
 }
@@ -134,7 +113,6 @@ module roleAssignments 'modules/roleAssignments.bicep' = {
   params: {
     functionAppPrincipalId: functionApp.outputs.principalId
     keyVaultName: keyvault.outputs.keyVaultName
-    cosmosAccountName: cosmos.outputs.accountName
     storageAccountName: storage.outputs.storageAccountName
     grantStorageRoles: useManagedIdentityStorage
   }
@@ -158,7 +136,5 @@ output functionAppName string = functionApp.outputs.functionAppName
 output functionAppHostname string = functionApp.outputs.defaultHostName
 output keyVaultName string = keyvault.outputs.keyVaultName
 output keyVaultUri string = keyvault.outputs.keyVaultUri
-output cosmosAccountName string = cosmos.outputs.accountName
-output cosmosEndpoint string = cosmos.outputs.endpoint
 output storageAccountName string = storage.outputs.storageAccountName
 output appInsightsConnectionString string = monitor.outputs.appInsightsConnectionString

@@ -22,7 +22,7 @@ export function HistorianSummary({ output }: { output: unknown }) {
     bits.push(`${counts.medications} medication${counts.medications === 1 ? '' : 's'}`);
   }
   return (
-    <p className="text-sm text-slate-600">
+    <p className="text-sm text-zinc-400">
       FHIR bundle extracted: {bits.join(', ')}.
     </p>
   );
@@ -55,7 +55,7 @@ export function HistorianDetail({ output }: { output: unknown }) {
   return (
     <div className="space-y-4 text-sm">
       <Section title="Patient">
-        <p className="text-slate-700">
+        <p className="text-zinc-300">
           {patient?.gender ?? 'unknown'}
           {patient?.birthDate ? `, born ${patient.birthDate}` : ''}
         </p>
@@ -65,10 +65,10 @@ export function HistorianDetail({ output }: { output: unknown }) {
         <Section title={`Conditions (${conditions.length})`}>
           <ul className="space-y-1">
             {conditions.map((c) => (
-              <li key={c.id} className="text-slate-700">
-                <span className="font-medium">{c.code.text}</span>
+              <li key={c.id} className="text-zinc-300">
+                <span className="font-medium text-zinc-100">{c.code.text}</span>
                 {c.clinicalStatus?.coding?.[0]?.code && (
-                  <span className="ml-2 text-xs text-slate-500">
+                  <span className="ml-2 text-xs text-zinc-500">
                     ({c.clinicalStatus.coding[0].code})
                   </span>
                 )}
@@ -82,8 +82,8 @@ export function HistorianDetail({ output }: { output: unknown }) {
         <Section title={`Observations (${observations.length})`}>
           <ul className="space-y-1">
             {observations.map((o) => (
-              <li key={o.id} className="text-slate-700">
-                <span className="font-medium">{o.code.text}:</span>{' '}
+              <li key={o.id} className="text-zinc-300">
+                <span className="font-medium text-zinc-100">{o.code.text}:</span>{' '}
                 <span>{formatValue(o)}</span>
               </li>
             ))}
@@ -95,9 +95,9 @@ export function HistorianDetail({ output }: { output: unknown }) {
         <Section title={`Medications (${medications.length})`}>
           <ul className="space-y-1">
             {medications.map((m) => (
-              <li key={m.id} className="text-slate-700">
-                <span className="font-medium">{m.medicationCodeableConcept.text}</span>
-                <span className="ml-2 text-xs text-slate-500">({m.status})</span>
+              <li key={m.id} className="text-zinc-300">
+                <span className="font-medium text-zinc-100">{m.medicationCodeableConcept.text}</span>
+                <span className="ml-2 text-xs text-zinc-500">({m.status})</span>
               </li>
             ))}
           </ul>
@@ -110,7 +110,7 @@ export function HistorianDetail({ output }: { output: unknown }) {
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div>
-      <h4 className="mb-1 text-xs font-semibold uppercase tracking-wider text-slate-500">
+      <h4 className="mb-1 text-xs font-semibold uppercase tracking-wider text-zinc-500">
         {title}
       </h4>
       {children}
